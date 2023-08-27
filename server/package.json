@@ -2,10 +2,10 @@
     "name": "budget-app",
     "version": "2023",
     "description": "",
-    "main": "users-controller.mjs",
+    "main": "invoice-controller.mjs",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "nodemon users-controller.mjs"
+      "start": "nodemon invoice-controller.mjs"
     },
     "author": "",
     "license": "ISC",

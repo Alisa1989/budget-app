@@ -1,0 +1,10 @@
+TEST FILE to perform CRUD operations on Invoice database
+
+CREATE 
+http://localhost:3000/create?title=Pencil&date=2023-8-24&amount=5&recurring=false
+
+RETRIEVE 
+
+UPDATE
+
+DELETE
