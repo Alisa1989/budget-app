@@ -9,20 +9,30 @@ mongoose.connect(
 const db = mongoose.connection;
 
 const invoiceSchema = mongoose.Schema({
-    // title, amount, date, recurring, notes
-    title: { type: String, required: true},
+    // name, price, date, recurring, notes
+    name: { type: String, required: true},
     date: { type: Date, required: true},
     notes: { type: String, required: false},
-    amount: { type: Number, required: true},
+    price: { type: Number, required: true},
     recurring: {type: Boolean}
 
 })
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 
-const createInvoice = async ( title, date, notes, amount, recurring) =>{
-    const invoice = new Invoice({title: title, date: date, notes: notes, amount: amount, recurring: recurring})
+const createInvoice = async ( name, date, notes, price, recurring) =>{
+    const invoice = new Invoice({name: name, date: date, notes: notes, price: price, recurring: recurring})
     return invoice.save();
+}
+
+const findInvoices = async(filter) => {
+    const query = Invoice.find(filter);
+    return query.exec();
+}
+
+const findById = async (_id) => {
+    const query = Movie.findById(_id);
+    return query.exec();
 }
 
 db.once("open", (err) => {
@@ -33,4 +43,4 @@ db.once("open", (err) => {
     }
 });
 
-export {createInvoice}
+export {createInvoice, findInvoices, findById}
