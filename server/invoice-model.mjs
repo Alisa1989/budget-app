@@ -8,32 +8,49 @@ mongoose.connect(
 
 const db = mongoose.connection;
 
+// Schema
 const invoiceSchema = mongoose.Schema({
     // name, price, date, recurring, notes
     name: { type: String, required: true},
-    date: { type: Date, required: true},
+    date: { type: Date, default: Date.now},
     notes: { type: String, required: false},
     price: { type: Number, required: true},
-    recurring: {type: Boolean}
+    recurring: {type: Boolean, required: true, default: false}
 
 })
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 
+// Create ------------
 const createInvoice = async ( name, date, notes, price, recurring) =>{
     const invoice = new Invoice({name: name, date: date, notes: notes, price: price, recurring: recurring})
     return invoice.save();
 }
 
+// Retrieve -----------
 const findInvoices = async(filter) => {
-    const query = Invoice.find(filter);
+    const query = Invoice.find(filter)
+        .select('name date notes price recurring _id');
     return query.exec();
 }
 
-const findById = async (_id) => {
-    const query = Movie.findById(_id);
+const findById = async (id) => {
+    const query = Invoice.findByID(id);
     return query.exec();
 }
+
+
+// Delete ------
+const deleteByID = async (id) => {
+    const result = await Invoice.deleteOne({_id: id})
+    return result.deletedCount;
+};
+
+const deleteByProperty = async (filter) => {
+    const result = await Invoice.deleteMany(filter);
+    return result.deletedCount
+}
+
 
 db.once("open", (err) => {
     if(err){
@@ -43,4 +60,4 @@ db.once("open", (err) => {
     }
 });
 
-export {createInvoice, findInvoices, findById}
+export {createInvoice, findInvoices, findById, deleteByID, deleteByProperty}

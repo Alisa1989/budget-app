@@ -1,12 +1,20 @@
 TEST FILE to perform CRUD operations on Invoice database
 
 CREATE 
-http://localhost:3000/create?title=Pencil&date=2023-8-24&amount=5&recurring=false
-http://localhost:3000/create?title=Chicken%20Nuggets&date=2023-8-24&amount=12.99&recurring=false
+http://localhost:3000/create?name=Pencil&date=2023-8-24&price=5&recurring=false
+http://localhost:3000/create?name=Chicken%20Nuggets&date=2023-8-24&price=12.99&recurring=false
+http://localhost:3000/create?name=Socks&date=1970-01-01&price=2.99&recurring=false
 
 RETRIEVE 
 http://localhost:3000/retrieve
+http://localhost:3000/retrieve?date=2023-8-24
+http://localhost:3000/retrieve?recurring=false
+http://localhost:3000/retrieve?title=Pencil
+
 
 UPDATE
 
 DELETE
+http://localhost:3000/delete
+http://localhost:3000/delete?name=Socks
+delete by ids
