@@ -18,7 +18,6 @@ app.get("/create", asyncHandler( async ( req, res) => {
 function invoiceFilter(req) {
     let filter = {};
     if (req.query._id !== undefined) {
-        console.log("id is", req.query._id);
         filter._id = req.query._id;
     }
     if (req.query.name !== undefined) {
@@ -49,6 +48,34 @@ app.get("/retrieve", asyncHandler( async ( req, res) => {
     }
 }));
 
+// Update ----------------
+
+app.get("/update", async (req, res) => {
+    const invoice = await invoices.findById(req.query._id);
+    if (invoice !== null) {
+        const update = {};
+        if (req.query.name !== undefined) {
+        update.name = req.query.name;
+        }
+        if (req.query.price !== undefined) {
+        update.price = req.query.price;
+        }
+        if (req.query.notes !== undefined) {
+        update.notes = req.query.notes;
+        }
+        if (req.query.date !== undefined) {
+        update.date = req.query.date;
+        }
+        const result = await invoices.updateInvoices({ _id: req.query._id}, update );
+        if (result.length !== 0) {
+            res.send({result: result})
+        } else {
+            res.status(404).json({Error: "Invoice not found"})
+        }
+    } else {
+        res.sendFile({ Error: "The document was not found, check id number" });
+    }
+});
 
 // Delete ----------------
 async function deleteByID(req, res) {

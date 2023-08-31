@@ -13,6 +13,7 @@ http://localhost:3000/retrieve?title=Pencil
 
 
 UPDATE
+http://localhost:3000/update?_id=[some id]&name=Chips 
 
 DELETE
 http://localhost:3000/delete

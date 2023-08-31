@@ -34,11 +34,17 @@ const findInvoices = async(filter) => {
     return query.exec();
 }
 
-const findById = async (id) => {
-    const query = Invoice.findByID(id);
+const findById = async (_id) => {
+    const query = Invoice.findById(_id);
     return query.exec();
 }
 
+// Update ------
+
+const updateInvoices = async (filter, update) => {
+    const result = await Invoice.updateOne(filter, update);
+    return result.modifiedCount;
+}
 
 // Delete ------
 const deleteByID = async (id) => {
@@ -60,4 +66,4 @@ db.once("open", (err) => {
     }
 });
 
-export {createInvoice, findInvoices, findById, deleteByID, deleteByProperty}
+export {createInvoice, findInvoices, findById, deleteByID, deleteByProperty, updateInvoices}
