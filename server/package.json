@@ -4,17 +4,16 @@
     "description": "",
     "main": "invoice-controller.mjs",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "start": "nodemon invoice-controller.mjs"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon invoice-controller.mjs"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
-      "dotenv": "^16.0.3",
-      "express": "^4.18.2",
-      "express-async-handler": "^1.2.0",
-      "mongoose": "^6.9.2",
-      "nodemon": "^2.0.20"
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-async-handler": "^1.2.0",
+        "mongoose": "^6.9.2",
+        "nodemon": "^2.0.20"
     }
-  }
-  
+}

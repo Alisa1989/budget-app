@@ -8,6 +8,14 @@ mongoose.connect(
 
 const db = mongoose.connection;
 
+db.once("open", (err) => {
+    if(err){
+        res.status(500).json({ error: 'Failed to connect to server'});
+    } else {
+    console.log("Successfully connected to MongoDB using Mongoose!");
+    }
+});
+
 // Schema
 const invoiceSchema = mongoose.Schema({
     // name, price, date, recurring, notes
@@ -23,27 +31,43 @@ const Invoice = mongoose.model("Invoice", invoiceSchema);
 
 // Create ------------
 const createInvoice = async ( name, date, notes, price, recurring) =>{
-    const invoice = new Invoice({name: name, date: date, notes: notes, price: price, recurring: recurring})
+    const invoice = new Invoice({
+        name: name, 
+        date: date, 
+        notes: notes, 
+        price: price, 
+        recurring: recurring
+    });
     return invoice.save();
 }
 
 // Retrieve -----------
-const findInvoices = async(filter) => {
+const findInvoice = async(filter) => {
     const query = Invoice.find(filter)
-        .select('name date notes price recurring _id');
     return query.exec();
 }
 
-const findById = async (_id) => {
-    const query = Invoice.findById(_id);
+const findById = async (id) => {
+    const query = Invoice.findById(id);
     return query.exec();
 }
 
 // Update ------
-
-const updateInvoices = async (filter, update) => {
-    const result = await Invoice.updateOne(filter, update);
-    return result.modifiedCount;
+const updateInvoices = async (id, name, date, notes, price, recurring) => {
+    await Invoice.replaceOne({_id: id}, {
+        name: name,
+        date: date, 
+        notes: notes,
+        price: price,
+        recurring: recurring
+    });
+    return {
+        name: name,
+        date: date, 
+        notes: notes,
+        price: price,
+        recurring: recurring
+    }
 }
 
 // Delete ------
@@ -52,18 +76,8 @@ const deleteByID = async (id) => {
     return result.deletedCount;
 };
 
-const deleteByProperty = async (filter) => {
-    const result = await Invoice.deleteMany(filter);
-    return result.deletedCount
-}
 
 
-db.once("open", (err) => {
-    if(err){
-        res.status(500).json({ error: 'Failed to connect to server'});
-    } else {
-    console.log("Successfully connected to MongoDB using Mongoose!");
-    }
-});
 
-export {createInvoice, findInvoices, findById, deleteByID, deleteByProperty, updateInvoices}
+
+export {createInvoice, findInvoice, findById, deleteByID, updateInvoices}

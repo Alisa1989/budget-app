@@ -7,40 +7,55 @@ const app = express();
 
 const PORT = process.env.PORT;
 
+// REST needs JSON MIME type
+app.use(express.json());
+
 // Create ----------------------
-app.get("/create", asyncHandler( async ( req, res) => {
-    const invoice = await invoices.createInvoice(req.query.name, req.query.date, 
-        req.query.notes, req.query.price, req.query.recurring)
-    res.send(invoice)
-}));
+app.post("/log", ( req, res) => {
+    invoices.createInvoice(
+        req.body.name, 
+        req.body.date.slice(0,10), 
+        req.body.notes, 
+        req.body.price, 
+        req.body.recurring
+        )
+    .then((purchase) => {
+        res.status(201).json(purchase);
+    })
+    .catch((error) => {
+        console.log(error);
+        res.status(400).json({ error: "Creation of a purchase document failed, check your syntax." });
+    });
+});
 
 // Retrieve --------------------
 function invoiceFilter(req) {
     let filter = {};
-    if (req.query._id !== undefined) {
-        filter._id = req.query._id;
+    if (req.body._id !== undefined) {
+        filter.id = req.body._id;
     }
-    if (req.query.name !== undefined) {
-        filter.name = req.query.name;
+    if (req.body.name !== undefined) {
+        filter.name = req.body.name;
     }
-    if (req.query.price !== undefined) {
-        filter.price = req.query.price;
+    if (req.body.price !== undefined) {
+        filter.price = req.body.price;
     }
-    if (req.query.date !== undefined) {
-        filter.date = req.query.date;
+    if (req.body.date !== undefined) {
+        filter.date = req.body.date;
     }
-    if (req.query.notes !== undefined) {
-        filter.notes = req.query.notes;
+    if (req.body.notes !== undefined) {
+        filter.notes = req.body.notes;
     }
-    if (req.query.recurring !== undefined) {
-        filter.recurring = req.query.recurring;
+    if (req.body.recurring !== undefined) {
+        filter.recurring = req.body.recurring;
     }
     return filter;
 }
 
-app.get("/retrieve", asyncHandler( async ( req, res) => {
+app.get("/log", asyncHandler( async ( req, res) => {
+    // console.log(req.body)
     const filter = invoiceFilter(req);
-    const result = await invoices.findInvoices(filter);
+    const result = await invoices.findInvoice(filter);
     if (result.length !== 0) {
         res.send(result)
     } else {
@@ -49,24 +64,26 @@ app.get("/retrieve", asyncHandler( async ( req, res) => {
 }));
 
 // Update ----------------
-
-app.get("/update", async (req, res) => {
-    const invoice = await invoices.findById(req.query._id);
+app.put("/log/:id", async (req, res) => {
+    const invoice = await invoices.findById(req.body.id);
     if (invoice !== null) {
         const update = {};
-        if (req.query.name !== undefined) {
-        update.name = req.query.name;
+        if (req.body.name !== undefined) {
+        update.name = req.body.name;
         }
-        if (req.query.price !== undefined) {
-        update.price = req.query.price;
+        if (req.body.price !== undefined) {
+        update.price = req.body.price;
         }
-        if (req.query.notes !== undefined) {
-        update.notes = req.query.notes;
+        if (req.body.notes !== undefined) {
+        update.notes = req.body.notes;
         }
-        if (req.query.date !== undefined) {
-        update.date = req.query.date;
+        if (req.body.date !== undefined) {
+        update.date = req.body.date;
         }
-        const result = await invoices.updateInvoices({ _id: req.query._id}, update );
+        if (req.body.recurring !== undefined) {
+        update.recurring = req.body.recurring;
+        }
+        const result = await invoices.updateInvoices({ id: req.body.id}, update );
         if (result.length !== 0) {
             res.send({result: result})
         } else {
@@ -78,37 +95,20 @@ app.get("/update", async (req, res) => {
 });
 
 // Delete ----------------
-async function deleteByID(req, res) {
-    try {
-        const deletedCount = await invoices.deleteByID(req.query._id)
-        res.send({ deletedCount: deletedCount});
-    } catch (error){
+app.delete("/log/:id", (req, res) => {
+    invoices.deleteByID(req.body.id)
+    .then((deletedCount) => {
+        if (deletedCount === 1) {
+            res.status(204).json({ response: 'Purchase document deleted'});
+        } else {
+            res.status(404).json({ error: 'The purchase document was not found'})
+        };
+    })
+    .catch((error) => {
         console.error(error);
-        res.send({error: 'Request failed'});    
-    }
-}
-
-async function deleteByProperty(req, res) {
-    const filters = invoiceFilter(req);
-    try {
-        if (Object.keys(filters).length === 0){
-            throw "Error: Filter is not valid"
-        }
-        const deletedCount = await invoices.deleteByProperty(filters);
-        res.send({ deletedCount: deletedCount})
-    } catch (error){
-        console.log(error);
-        res.send({error: 'Request failed'})
-    }
-}
-
-app.get("/delete", (req, res) => {
-    if (req.query._id !== undefined) {
-        deleteByID(req, res);
-    } else {
-        deleteByProperty(req, res);
-    }
-})
+        res.send({ error: "Request to delete by ID failed" });
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);
