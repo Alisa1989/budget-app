@@ -7,6 +7,7 @@ function CreatePage() {
         price: "",
         notes: "",
         date: "",
+        category: "",
         recurring: false
     })
 
@@ -35,10 +36,11 @@ const onChange = (e) => {
     e.persist();
     // console.log("input changed!", e.target.value);
     const newFormData = {
-    ...purchase,
-    [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
-    // [e.target.name]: e.target.value
+        ...purchase,
+        [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
+        // [e.target.name]: e.target.value
     };
+    // console.log("newFormData", newFormData);
     setPurchase(newFormData);
   };
 
@@ -54,6 +56,7 @@ const onChange = (e) => {
                     <th>Price</th>
                     <th>Notes</th>
                     <th>Date</th>
+                    <th>Category</th>
                     <th>Recurring</th>
                 </tr>
             </thead>
@@ -106,6 +109,25 @@ const onChange = (e) => {
                             pattern="\d{2}-\d{2}-\d{2}"
                             />
                         </label>
+                        </td>
+                        <td>
+                            <label htmlFor="category">
+                            <select
+                                name="category"
+                                id="category"
+                                value={purchase.category ?? ""}
+                                onChange={onChange}
+                            >
+                                <option value="">--Please choose an option--</option>
+                                <option value="rent">Rent</option>
+                                <option value="food">Food</option>
+                                <option value="cars">Cars</option>
+                                <option value="house">House</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="theia">Theia</option>
+                                <option value="other">Other</option>
+                            </select>
+                            </label>
                         </td>
                         <td>
                             <label htmlFor="recurring">

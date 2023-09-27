@@ -1,0 +1,6 @@
+TODO
+
+- form validation: create and edit
+
+Does it make sense to have two models and two controllers 
+for 2 different schemas coming from the same database?

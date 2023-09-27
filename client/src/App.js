@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // import HomePage from './pages/HomePage';
-import BudgetPage from './pages/BudgetPage';
+// import Expenses from './pages/Expenses';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
+import Home from './pages/Home';
 
 import './App.css';
 
@@ -27,7 +28,8 @@ function App() {
           <section className="App-article">
             <Routes>
                 {/* <Route path="/" element={<HomePage />} /> */}
-                <Route path="/" element={<BudgetPage setEditPurchase={setEditPurchase}/>} /> 
+                {/* <Route path="/" element={<Expenses setEditPurchase={setEditPurchase}/>} />  */}
+                <Route path="/" element={<Home props={{setEditPurchase}}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
                 <Route path="/edit-purchase" element={<EditPage purchase={purchase}/>} /> 
 

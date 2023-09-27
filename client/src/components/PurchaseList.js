@@ -13,6 +13,7 @@ function PurchaseList({ purchases, onDelete, onEdit}) {
                         <th>Price</th>
                         <th>Notes</th>
                         <th>Date</th>
+                        <th>Category</th>
                         <th>Recurring</th>
                         <th>Delete</th>
                     </tr>

@@ -2,18 +2,14 @@ import React, { useEffect, useState } from "react";
 import PurchaseList from "../components/PurchaseList";
 import { useNavigate } from "react-router-dom";
 
-function BudgetPage({ setEditPurchase }) {
+function Expenses({ setEditPurchase, expenses }) {
     const [purchases, setPurchases] = useState([]);
+
+    useEffect(() => {
+        setPurchases(expenses);
+    }, [expenses])
     
     const navigate = useNavigate();
-
-    const loadPurchases = async () => {
-        const response = await fetch('/log', {
-            method: 'get'
-        });
-        const purchases = await response.json();
-        setPurchases(purchases)
-    }
 
     // UPDATE a single purchase
     const onEditPurchase = async purchase => {
@@ -33,10 +29,6 @@ function BudgetPage({ setEditPurchase }) {
         }
     }
 
-    useEffect(() => {
-        loadPurchases();
-    }, [])
-
     return(
         <div >
             <h2>List of Purchases</h2>
@@ -52,4 +44,4 @@ function BudgetPage({ setEditPurchase }) {
 
 }
 
-export default BudgetPage;
+export default Expenses;
