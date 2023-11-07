@@ -1,40 +1,19 @@
-import mongoose from 'mongoose';
-import 'dotenv/config';
+const mongoose = require('mongoose');
 
-mongoose.connect(
-    process.env.MONGODB_CONNECT_STRING,
-    { useNewUrlParser: true }
-);
-
-const db = mongoose.connection;
-
-db.once("open", (err) => {
-    if(err){
-        res.status(500).json({ error: 'Failed to connect to server'});
-    } else {
-    console.log("Successfully connected to MongoDB using Mongoose!");
-    }
-});
 
 // Schema
 const invoiceSchema = mongoose.Schema({
     // name, price, date, recurring, notes
+    // user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
     name: { type: String, required: true},
     date: { type: Date, default: Date.now},
     notes: { type: String, required: false},
     price: { type: Number, required: true},
     category: { type: String, required: true},
     recurring: {type: Boolean, required: true, default: false}
-
-})
-
-const budgetSchema = mongoose.Schema({
-    category: { type: String, required: true},
-    amount: { type: Number, default: 0 }
 })
 
 const Invoice = mongoose.model("Invoice", invoiceSchema);
-const Budget = mongoose.model("Budget", budgetSchema);
 
 // INVOICE
 // Create ------------
@@ -87,32 +66,4 @@ const deleteByID = async (id) => {
     return result.deletedCount;
 };
 
-// BUDGET 
-const createBudget = async ( amount, category) =>{
-    const budget = new Budget({
-        amount: amount, 
-        category: category,
-    });
-    return budget.save();
-}
-
-
-// Find
-const findBudget = async(filter) => {
-    const query = Budget.find(filter)
-    return query.exec();
-}
-
-// Update
-const updateBudget = async (category, amount) => {
-    await Budget.replaceOne(category, {
-        amount: amount
-    });
-    return {
-        amount: amount
-    }
-}
-
-
-
-export {createInvoice, findInvoice, findById, deleteByID, updateInvoices, createBudget, findBudget, updateBudget}
+module.exports = {createInvoice, findInvoice, findById, deleteByID, updateInvoices};

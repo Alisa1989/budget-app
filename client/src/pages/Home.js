@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Expenses from "./Expenses";
 import Budgets from "./Budgets";
-import CreateBudget from "../components/CreateBudget";
+import { Box, Stack } from "@mui/material"
+import PieChartPage from "./PieChartPage";
 
 function Home({setEditPurchase}) {
 
@@ -9,20 +10,20 @@ function Home({setEditPurchase}) {
   const [expenses, setExpenses] = useState([])
 
   const loadPurchases = async () => {
-    const response = await fetch('/log', {
+    const response = await fetch('/api/invoices', {
         method: 'get'
     });
     const expenses = await response.json();
-    console.log("expenses", expenses)
+    // console.log("expenses", expenses)
     setExpenses(expenses)
-}
+  }
 
   const loadBudgets = async () => {
-    const response = await fetch('/budgets', {
+    const response = await fetch('/api/budgets', {
         method: 'get'
     });
     const list = await response.json();
-    console.log("list", list)
+    // console.log("list", list)
     setBudgets(list)
   }
 
@@ -40,17 +41,21 @@ function Home({setEditPurchase}) {
 
 
   return (
-    <>
-      <h2>Home Page</h2>
-      <Expenses 
-        setEditPurchase={setEditPurchase} 
-        expenses = {expenses}
-        />
-      <Budgets 
-        budgets = {budgets}
-      />
-      <CreateBudget/>
-    </>
+    <Box sx={{backgroundColor: "pink", margin: "20px", padding: "20px"}}>
+      <Stack direction="row" spacing={3} >
+        <Expenses 
+          setEditPurchase={setEditPurchase} 
+          expenses = {expenses}
+          />
+        
+        <PieChartPage
+          expenses = {expenses}
+          />
+        <Budgets 
+          budgets = {budgets}
+          />
+      </Stack>
+    </Box>
   );
 }
 

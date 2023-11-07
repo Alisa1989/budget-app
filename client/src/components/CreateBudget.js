@@ -7,7 +7,7 @@ function CreateBudget() {
     })
 
     const addBudget = async() => {
-        const response = await fetch('/budgets', {
+        const response = await fetch('/api/budgets', {
             method: 'POST',
             body: JSON.stringify(budget),
             headers: {
@@ -35,21 +35,29 @@ function CreateBudget() {
 
 
     return (
-        <>
+        <div>
             <div>CreateBudget</div>
             <form onSubmit={addBudget}>
-                <label htmlFor="">
+                <label htmlFor="category">
                     category
-                    <input
-                    type="text"
-                    id="category"
-                    name="category"
-                    value={budget.category}
-                    onChange={onChange}
-                    autoFocus
-                    />
+                    <select
+                        name="category"
+                        id="category"
+                        value={budget.category ?? ""}
+                        onChange={onChange}
+                        autoFocus
+                    >
+                        <option value="">--Please choose an option--</option>
+                        <option value="rent">Rent</option>
+                        <option value="food">Food</option>
+                        <option value="cars">Cars</option>
+                        <option value="house">House</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="theia">Theia</option>
+                        <option value="other">Other</option>
+                    </select>
                 </label>
-                <label htmlFor="">
+                <label htmlFor="amount">
                     amount
                     <input
                     type="text"
@@ -62,7 +70,7 @@ function CreateBudget() {
                 </label>
                 <button>Add Budget</button>
             </form>
-        </>
+        </div>
     )
 }
 

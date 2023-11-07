@@ -15,7 +15,7 @@ const navigate = useNavigate();
 
 const addPurchase = async () => {
     // const newPurchase = {purchase};
-    const response = await fetch('/log', {
+    const response = await fetch('/api/invoices', {
         method: 'POST',
         body: JSON.stringify(purchase),
         headers: {

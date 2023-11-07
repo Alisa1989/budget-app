@@ -16,7 +16,7 @@ const navigate = useNavigate();
 
 const editPurchase = async () => {
     // console.log("purchase id", purchase._id)
-    const response = await fetch(`/log/${purchase._id}`, {
+    const response = await fetch(`/api/invoices/${purchase._id}`, {
         method: 'PUT',
         body: JSON.stringify(purchaseEdit),
         headers: {
@@ -118,6 +118,7 @@ const onChange = (e) => {
                                 name="category"
                                 id="category"
                                 value={purchase.category}
+                                onChange={onChange}
                             >
                                 <option value="">--Please choose an option--</option>
                                 <option value="rent">Rent</option>

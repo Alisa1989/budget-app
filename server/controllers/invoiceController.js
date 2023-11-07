@@ -1,17 +1,10 @@
-import 'dotenv/config';
-import express from 'express';
-import asyncHandler from 'express-async-handler';
-import * as invoices from './invoice-model.mjs'; 
+const asyncHandler = require('express-async-handler');
+const invoices = require('../models/invoiceModel');
 
-const app = express();
 
-const PORT = process.env.PORT;
 
-// REST needs JSON MIME type
-app.use(express.json());
-
-// Create ----------------------
-app.post("/log", ( req, res) => {
+// Create ------- Creates Invoice @ POST /api/invoices/
+const createInvoice = async ( req, res) => {
     invoices.createInvoice(
         req.body.name, 
         req.body.date.slice(0,10), 
@@ -27,9 +20,9 @@ app.post("/log", ( req, res) => {
         console.log(error);
         res.status(400).json({ error: "Creation of a purchase document failed, check your syntax." });
     });
-});
+};
 
-// Retrieve --------------------
+// Retrieve ------------- Gets Invoices @ GET /api/invoices/
 function invoiceFilter(req) {
     let filter = {};
     if (req.body._id !== undefined) {
@@ -56,7 +49,7 @@ function invoiceFilter(req) {
     return filter;
 }
 
-app.get("/log", asyncHandler( async ( req, res) => {
+const getInvoices =  asyncHandler( async ( req, res) => {
     // console.log(req.body)
     const filter = invoiceFilter(req);
     const result = await invoices.findInvoice(filter);
@@ -65,10 +58,10 @@ app.get("/log", asyncHandler( async ( req, res) => {
     } else {
         res.status(404).json({Error: "Invoice not found"})
     }
-}));
+});
 
-// Update ----------------
-app.put("/log/:id", async (req, res) => {
+// Update ------------- Update Invoice @ PUT /api/invoices/:id
+const updateInvoice = async (req, res) => {
     console.log("params", req.params)
     console.log("body", req.body)
     const invoice = await invoices.findById(req.params.id);
@@ -87,7 +80,7 @@ app.put("/log/:id", async (req, res) => {
         update.date = req.body.date;
         }
         if (req.body.category !== undefined) {
-        filter.category = req.body.category;
+        update.category = req.body.category;
         }
         if (req.body.recurring !== undefined) {                    
         update.recurring = req.body.recurring;
@@ -101,10 +94,10 @@ app.put("/log/:id", async (req, res) => {
     } else {
         res.sendFile({ Error: "The document was not found, check id number" });
     }
-});
+};
 
-// Delete ----------------
-app.delete("/log/:id", (req, res) => {
+// Delete ---------------- Delete Invoice @ DELETE /api/invoices/:id
+const deleteInvoice = async (req, res) => {
     invoices.deleteByID(req.params.id)
     .then((deletedCount) => {
         if (deletedCount === 1) {
@@ -117,70 +110,6 @@ app.delete("/log/:id", (req, res) => {
         console.error(error);
         res.send({ error: "Request to delete by ID failed" });
     });
-});
+};
 
-// BUDGET ----------------------
-// Create ----------------------
-app.post("/budgets", ( req, res) => {
-    console.log("req.body", req.body)
-    invoices.createBudget(
-        req.body.amount,
-        req.body.category
-        )
-    .then((budget) => {
-        res.status(201).json(budget);
-    })
-    .catch((error) => {
-        console.log(error);
-        res.status(400).json({ error: "Creation of a budget document failed, check your syntax." });
-    });
-});
-
-// Retrieve ----------------
-function budgetFilter(req) {
-    let filter = {};
-    if (req.body.category !== undefined) {
-        filter.category = req.body.category;
-    }
-    return filter;
-}
-
-app.get("/budgets", asyncHandler( async ( req, res) => {
-    // console.log(req.body)
-    const filter = budgetFilter(req);
-    const result = await invoices.findBudget(filter);
-    if (result.length !== 0) {
-        res.send(result)
-    } else {
-        res.status(404).json({Error: "Invoice not found"})
-    }
-}));
-
-// Update ----------------
-app.put("/budgets/:id", async (req, res) => {
-    console.log("params", req.params)
-    console.log("body", req.body)
-    const budget = await invoices.findByCategory(req.params.category);
-    if (budget !== null) {
-        const update = {};
-        if (req.body.amount !== undefined) {
-        update.amount = req.body.amount;
-        }
-        const result = await invoices.updateInvoices({ category: req.params.category}, update );
-        if (result.length !== 0) {
-            res.send({result: result})
-        } else {
-            res.status(404).json({Error: "Budget not found"})
-        }
-    } else {
-        res.sendFile({ Error: "The document was not found, check id number" });
-    }
-});
-
-
-
-
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}...`);
-});
-
+module.exports = { createInvoice, getInvoices, updateInvoice, deleteInvoice};
