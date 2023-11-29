@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/api/invoices', require('./routes/invoiceRoutes.js'));
 app.use('/api/budgets', require('./routes/budgetRoutes.js'));
 app.use('/api/users', require('./routes/userRoutes.js'));
+app.use('/api/micros', require('./routes/microservicesRoutes.js'));
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}...`);

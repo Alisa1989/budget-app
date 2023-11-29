@@ -5,6 +5,7 @@ import PieChart from "../components/PieChart";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 
+
 Chart.register(CategoryScale);
  
 function PieChartPage({expenses}) {
@@ -32,9 +33,18 @@ function PieChartPage({expenses}) {
         result.forEach(elem => {
             adder += elem.price;
         });
-        // console.log("adder", adder.toFixed(2))
         return adder.toFixed(2);
     };
+        
+        // insert microservice here ------------------
+    // fetch(raw)
+    //     .then(r => r.text())
+    //     .then(textRead => {
+    //     console.log('text decoded:', textRead);
+    //     });
+
+        // --------------------------------------------
+
     
     // returns an array with the price sums in the same order of their respective category
     const sumsArray = (cats) => {
@@ -77,7 +87,9 @@ function PieChartPage({expenses}) {
     const sumAmounts = sumsArray(uniqueCategories);
     
     console.log("change UC", uniqueCategories, "SA", sumAmounts);
-    const [chartData, setChartData] = useState({
+
+    const initialState = {
+        // labels: categories.filter((item, index) => categories.indexOf(item) === index), 
         labels: uniqueCategories, 
         datasets: [
             {
@@ -88,15 +100,18 @@ function PieChartPage({expenses}) {
                 borderColor: "black",
                 borderWidth: 2
             }
-        ]
-    });
+        ]}
+
+    const [chartData, setChartData] = useState(initialState);
+     
     useEffect(() => {
-      setChartData({
+      console.log("use effect called");
+      setChartData(chartData => ({
         ...chartData,
         labels: uniqueCategories,
-        data: sumAmounts
-      })
-    }, [])
+        data: sumAmounts          
+      }))
+    }, [expenses])
 
   console.log("chartData", chartData);
  
@@ -108,9 +123,27 @@ function PieChartPage({expenses}) {
                 modalTitle="The Pie Chart"
                 description="Gives you an overall view of your spending habits"
                 />
-      <PieChart chartData={chartData} />
+      {chartData && <PieChart chartData={chartData} />}
     </div>
   );
 }
 
 export default PieChartPage;
+
+
+
+    //         // labels: [
+    //         //   'Red',
+    //         //   'Blue',
+    //         //   'Yellow'
+    //         // ],
+    //         // datasets: [{
+    //         //   label: 'My First Dataset',
+    //         //   data: [300, 50, 100],
+    //         //   backgroundColor: [
+    //         //     'rgb(255, 99, 132)',
+    //         //     'rgb(54, 162, 235)',
+    //         //     'rgb(255, 205, 86)'
+    //         //   ],
+    //         //   hoverOffset: 4
+    //         // }]

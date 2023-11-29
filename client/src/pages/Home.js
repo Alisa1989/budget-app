@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Expenses from "./Expenses";
 import Budgets from "./Budgets";
-import { Box, Stack } from "@mui/material"
+import { Box, Container, Stack } from "@mui/material"
 import PieChartPage from "./PieChartPage";
+import BasicModal from "../components/BasicModal";
 
 function Home({setEditPurchase}) {
 
@@ -41,8 +42,14 @@ function Home({setEditPurchase}) {
 
 
   return (
-    <Box sx={{backgroundColor: "pink", margin: "20px", padding: "20px"}}>
-      <Stack direction="row" spacing={3} >
+    <Container>
+        <BasicModal 
+          buttonIcon= "Getting Started"
+          modalTitle="First Things First"
+          description="Start by adding a purchase from the list of expenses. The budget setting feature is not essential."
+        />
+    <Box sx={{margin: "20px", padding: "20px"}}>
+      <Stack sx = {{flexDirection: { xs: "column", md: "row"}}} >
         <Expenses 
           setEditPurchase={setEditPurchase} 
           expenses = {expenses}
@@ -56,6 +63,7 @@ function Home({setEditPurchase}) {
           />
       </Stack>
     </Box>
+    </Container>
   );
 }
 
