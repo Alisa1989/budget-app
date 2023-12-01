@@ -1,69 +1,12 @@
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
-import { useState, useEffect } from "react";
-import PieChart from "../components/PieChart";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
+import PieChart from "../components/PieChart";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-
-Chart.register(CategoryScale);
+ChartJS.register(ArcElement, Tooltip, Legend);
  
-function PieChartPage({expenses}) {
-
-    console.log("RENDERING");
-
-    const removeDuplicates = (arr) => {
-        let unique = [];
-        arr.forEach(element => {
-            if (!unique.includes(element)) {
-                unique.push(element)
-            };
-        });
-        return unique;
-    }
-    
-    const categories = expenses.map((elem) => {
-        return elem.category
-        });
-
-    // returns the sum of the prices of that category
-    const categoryPriceSums = (cat) => {
-        const result = expenses.filter((elem) => elem.category === cat);
-        let adder = 0;
-        result.forEach(elem => {
-            adder += elem.price;
-        });
-        return adder.toFixed(2);
-    };
-        
-        // insert microservice here ------------------
-    // fetch(raw)
-    //     .then(r => r.text())
-    //     .then(textRead => {
-    //     console.log('text decoded:', textRead);
-    //     });
-
-        // --------------------------------------------
-
-    
-    // returns an array with the price sums in the same order of their respective category
-    const sumsArray = (cats) => {
-        let sums = [];
-        cats.forEach((elem) => {
-            sums.push(categoryPriceSums(elem));
-        });
-        console.log("sums", sums)
-        return sums;
-    };
-
-    // const [uniqueCategories, setUniqueCategories] = useState(removeDuplicates(categories));
-    // const [sumAmounts, setSumAmounts] = useState(sumsArray(uniqueCategories));
-    
-    // useEffect(() => {
-    // setUniqueCategories(removeDuplicates(categories));
-    // setSumAmounts(sumsArray(uniqueCategories));
-    // }, [])
-    
+function PieChartPage({groupedExpenses}) {
+ 
     const BGColors = [
         "#42A5F5",
         "#66BB6A",
@@ -82,39 +25,20 @@ function PieChartPage({expenses}) {
         "#1f48ff",
         "#75df66"
     ];
-    
-    const uniqueCategories = removeDuplicates(categories);
-    const sumAmounts = sumsArray(uniqueCategories);
-    
-    console.log("change UC", uniqueCategories, "SA", sumAmounts);
 
-    const initialState = {
-        // labels: categories.filter((item, index) => categories.indexOf(item) === index), 
-        labels: uniqueCategories, 
+    const chartData = {
+        labels: Object.keys(groupedExpenses), 
         datasets: [
             {
                 label: "Expenses",
-                data: sumAmounts,
-                backgroundColor: BGColors.slice(0, categories.length),
-                hoverBackgroundColor: BGHoverColors.slice(0, categories.length),
+                data: Object.values(groupedExpenses),
+                backgroundColor: BGColors.slice(0, Object.keys(groupedExpenses).length),
+                hoverBackgroundColor: BGHoverColors.slice(0, Object.keys(groupedExpenses).length),
                 borderColor: "black",
                 borderWidth: 2
             }
         ]}
 
-    const [chartData, setChartData] = useState(initialState);
-     
-    useEffect(() => {
-      console.log("use effect called");
-      setChartData(chartData => ({
-        ...chartData,
-        labels: uniqueCategories,
-        data: sumAmounts          
-      }))
-    }, [expenses])
-
-  console.log("chartData", chartData);
- 
   return (
     <div>
       <BasicModal
@@ -123,27 +47,9 @@ function PieChartPage({expenses}) {
                 modalTitle="The Pie Chart"
                 description="Gives you an overall view of your spending habits"
                 />
-      {chartData && <PieChart chartData={chartData} />}
+      <PieChart chartData={chartData}/>
     </div>
   );
 }
 
 export default PieChartPage;
-
-
-
-    //         // labels: [
-    //         //   'Red',
-    //         //   'Blue',
-    //         //   'Yellow'
-    //         // ],
-    //         // datasets: [{
-    //         //   label: 'My First Dataset',
-    //         //   data: [300, 50, 100],
-    //         //   backgroundColor: [
-    //         //     'rgb(255, 99, 132)',
-    //         //     'rgb(54, 162, 235)',
-    //         //     'rgb(255, 205, 86)'
-    //         //   ],
-    //         //   hoverOffset: 4
-    //         // }]

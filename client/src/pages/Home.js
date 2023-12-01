@@ -9,38 +9,40 @@ function Home({setEditPurchase}) {
 
   const [budgets, setBudgets] = useState([])
   const [expenses, setExpenses] = useState([])
-
+  
   const loadPurchases = async () => {
     const response = await fetch('/api/invoices', {
-        method: 'get'
+      method: 'get'
     });
     const expenses = await response.json();
-    // console.log("expenses", expenses)
     setExpenses(expenses)
   }
-
+  
   const loadBudgets = async () => {
     const response = await fetch('/api/budgets', {
-        method: 'get'
+      method: 'get'
     });
     const list = await response.json();
-    // console.log("list", list)
     setBudgets(list)
   }
-
+  
   useEffect(() => {
     loadPurchases();
     loadBudgets();
   }, [])
-
-  // const categories = []
-  const categories = expenses.map((elem) => {
-    return elem.category
-  })
-
-  console.log("categories", categories);
-
-
+  
+  //expenses grouped by category
+  const groupedExpenses = expenses.reduce((expense, item) => {
+    const category = item.category;
+    const price = item.price;
+    if (!expense.hasOwnProperty(category)) {
+      expense[category] = 0;
+    }
+    
+    expense[category] += price;
+    return expense;
+  }, {});
+  
   return (
     <Container>
         <BasicModal 
@@ -52,14 +54,16 @@ function Home({setEditPurchase}) {
       <Stack sx = {{flexDirection: { xs: "column", md: "row"}}} >
         <Expenses 
           setEditPurchase={setEditPurchase} 
+          setExpenses = {setExpenses}
           expenses = {expenses}
           />
         
         <PieChartPage
-          expenses = {expenses}
+          groupedExpenses = {groupedExpenses}
           />
         <Budgets 
           budgets = {budgets}
+          groupedExpenses = {groupedExpenses}
           />
       </Stack>
     </Box>

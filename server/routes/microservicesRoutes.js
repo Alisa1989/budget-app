@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const { getRoundedNumber } = require('../controllers/microservicesController')
+// const express = require('express');
+// const router = express.Router();
+// const { getRoundedNumber } = require('../controllers/microservicesController')
 
-router.post("/", getRoundedNumber);
+// router.post("/", getRoundedNumber);
 
-module.exports = router;
+// module.exports = router;

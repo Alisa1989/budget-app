@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PurchaseList from "../components/PurchaseList";
 import { useNavigate } from "react-router-dom";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 
-function Expenses({ setEditPurchase, expenses }) {
-    const [purchases, setPurchases] = useState([]);
-
-    useEffect(() => {
-        setPurchases(expenses);
-    }, [expenses])
-    
+function Expenses({ setEditPurchase, expenses, setExpenses }) { 
     const navigate = useNavigate();
 
     // UPDATE a single purchase
@@ -26,7 +20,7 @@ function Expenses({ setEditPurchase, expenses }) {
         if (response.status === 204) {
             const getResponse = await fetch('/api/invoices');
             const purchases = await getResponse.json();
-            setPurchases(purchases)
+            setExpenses(purchases)
         } else {
             console.error(`Failed to delete purchase with id = ${_id}, status code = ${response.status}`)
         }
@@ -42,7 +36,7 @@ function Expenses({ setEditPurchase, expenses }) {
                 />
             <p>These are my most recent purchases</p>
             <PurchaseList
-                purchases={purchases}
+                purchases={expenses}
                 onEdit={onEditPurchase}
                 onDelete={onDeletePurchase}
             />

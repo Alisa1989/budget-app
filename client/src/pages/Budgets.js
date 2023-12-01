@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 import CreateBudget from "../components/CreateBudget";
 
-const Budgets = ({budgets}) => {
-    const [budgetList, setBudgetList] = useState([]);
-
-
-    useEffect(() => {
-        setBudgetList(budgets);
-        console.log("budgets", budgets);
-    }, [budgets])
+const Budgets = ({budgets, groupedExpenses}) => {
 
   return (
     <div>
@@ -21,11 +14,14 @@ const Budgets = ({budgets}) => {
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
         <button>Edit Budgets</button>
-        {budgetList.map((item, index) =>{
+        {budgets.map((item, index) =>{
             return (
-            <div key={index}>
-                <p>Category: {item.category}</p>
-                <p>Amount: {item.amount}</p>
+
+                <div key={index}>
+                    <label for="file">{item.category}</label>
+
+                    <progress id="file" max={item.amount} value={groupedExpenses[item.category] || 0 }>{groupedExpenses[item.category] || 0 }%</progress>
+                {console.log("max", item.amount, "value", groupedExpenses[item.category])}
             </div>
             )
         })}
