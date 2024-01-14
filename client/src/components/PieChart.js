@@ -9,6 +9,8 @@ function PieChart({ chartData }) {
     <div className="chart-container">
       <h2 style={{ textAlign: "center" }}>Pie Chart</h2>
       {chartData && <Pie
+        aria-label="expenses pie chart" 
+        role="img"
         redraw={true}
         data={chartData}
         options={{

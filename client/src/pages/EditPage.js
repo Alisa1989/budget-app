@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const EditPage = ({ purchase }) => {
     const [purchaseEdit, setPurchaseEdit] = useState({
         name: purchase.name,
@@ -15,10 +14,10 @@ const EditPage = ({ purchase }) => {
 const navigate = useNavigate();
 
 const editPurchase = async () => {
-    // console.log("purchase id", purchase._id)
+
     const response = await fetch(`/api/invoices/${purchase._id}`, {
         method: 'PUT',
-        body: JSON.stringify(purchaseEdit),
+        body: JSON.stringify(Math.round(purchaseEdit * 100) / 100),
         headers: {
             'Content-Type': 'application/json',
         },
@@ -142,7 +141,7 @@ const onChange = (e) => {
                             />
                         </label>
                         </td>
-                        <td><button className="wait" onClick={editPurchase}>Modify</button></td>
+                        <td><button title="Confirm Changes" className="wait" onClick={editPurchase}>Modify</button></td>
                     </tr>
                 </tbody>
             </table>

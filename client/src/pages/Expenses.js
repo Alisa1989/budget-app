@@ -40,7 +40,7 @@ function Expenses({ setEditPurchase, expenses, setExpenses }) {
                 onEdit={onEditPurchase}
                 onDelete={onDeletePurchase}
             />
-            <button className="action-button" onClick={()=>navigate('/create-purchase')}>Add Purchase</button>
+            <button title="Add Purchase" className="action-button" onClick={()=>navigate('/create-purchase')}>Add Purchase</button>
         </div>
     )
 

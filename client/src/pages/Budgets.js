@@ -13,15 +13,15 @@ const Budgets = ({budgets, groupedExpenses}) => {
                 modalTitle="Budgets"
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
-        <button>Edit Budgets</button>
+        <button title="Edit Budgets">Edit Budgets</button>
         {budgets.map((item, index) =>{
             return (
 
                 <div key={index}>
-                    <label for="file">{item.category}</label>
+                    <label htmlFor="file">{item.category}</label>
 
                     <progress id="file" max={item.amount} value={groupedExpenses[item.category] || 0 }>{groupedExpenses[item.category] || 0 }%</progress>
-                {console.log("max", item.amount, "value", groupedExpenses[item.category])}
+                {/* {console.log("max", item.amount, "value", groupedExpenses[item.category])} */}
             </div>
             )
         })}

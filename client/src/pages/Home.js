@@ -17,6 +17,8 @@ function Home({setEditPurchase}) {
     const expenses = await response.json();
     setExpenses(expenses)
   }
+
+  // console.log("expenses", expenses)
   
   const loadBudgets = async () => {
     const response = await fetch('/api/budgets', {
@@ -46,6 +48,7 @@ function Home({setEditPurchase}) {
   return (
     <Container>
         <BasicModal 
+          title = "Getting Started"
           buttonIcon= "Getting Started"
           modalTitle="First Things First"
           description="Start by adding a purchase from the list of expenses. The budget setting feature is not essential."

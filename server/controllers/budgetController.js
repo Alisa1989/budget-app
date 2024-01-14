@@ -7,7 +7,8 @@ const createBudget = ( req, res) => {
     console.log("req.body", req.body)
     budget.createBudget(
         req.body.amount,
-        req.body.category
+        req.body.category,
+        req.user
         )
     .then((budget) => {
         res.status(201).json(budget);
@@ -40,8 +41,8 @@ const getBudgets = asyncHandler( async ( req, res) => {
 
 // Update ----------------
 const updateBudget = async (req, res) => {
-    console.log("params", req.params)
-    console.log("body", req.body)
+    // console.log("params", req.params)
+    // console.log("body", req.body)
     const budget = await budget.findByCategory(req.params.category);
     if (budget !== null) {
         const update = {};

@@ -5,7 +5,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
  
-function PieChartPage({groupedExpenses}) {
+function PieChartPage({groupedExpenses, grandTotal}) {
  
     const BGColors = [
         "#42A5F5",
@@ -48,6 +48,7 @@ function PieChartPage({groupedExpenses}) {
                 description="Gives you an overall view of your spending habits"
                 />
       <PieChart chartData={chartData}/>
+      {`Grand Total ${grandTotal}`}
     </div>
   );
 }

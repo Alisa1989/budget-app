@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        const connect = await mongoose.connect(process.env.MONGODB_CONNECT_STRING);
+        const connect = await mongoose.connect(process.env.MONGODB_CONNECT_STRING, {useNewUrlParser: true});
         console.log(`MongoDB Connected: ${connect.connection.host}`);
 
 

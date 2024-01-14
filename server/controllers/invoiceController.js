@@ -1,17 +1,18 @@
 const asyncHandler = require('express-async-handler');
-const invoices = require('../models/invoiceModel');
-
-
+const Invoice = require('../models/invoiceModel');
+const User = require('../models/userModel');
 
 // Create ------- Creates Invoice @ POST /api/invoices/
 const createInvoice = async ( req, res) => {
-    invoices.createInvoice(
+    console.log("user in controller", req.user)
+    Invoice.createInvoice(
         req.body.name, 
         req.body.date.slice(0,10), 
         req.body.notes, 
         req.body.price, 
         req.body.category,
-        req.body.recurring
+        req.body.recurring,
+        req.user
         )
     .then((purchase) => {
         res.status(201).json(purchase);
@@ -46,13 +47,15 @@ function invoiceFilter(req) {
     if (req.body.recurring !== undefined) {
         filter.recurring = req.body.recurring;
     }
+    filter.user = req.user._id;
     return filter;
 }
 
 const getInvoices =  asyncHandler( async ( req, res) => {
     // console.log(req.body)
+    // console.log("req.user", req.user)
     const filter = invoiceFilter(req);
-    const result = await invoices.findInvoice(filter);
+    const result = await Invoice.findInvoice(filter);
     if (result.length !== 0) {
         res.send(result)
     } else {
@@ -62,9 +65,25 @@ const getInvoices =  asyncHandler( async ( req, res) => {
 
 // Update ------------- Update Invoice @ PUT /api/invoices/:id
 const updateInvoice = async (req, res) => {
-    console.log("params", req.params)
-    console.log("body", req.body)
-    const invoice = await invoices.findById(req.params.id);
+    // console.log("params", req.params)
+    // console.log("body", req.body)
+
+    const user = await User.findById(req.user._id);
+
+    if (!user){
+        res.status(401).json({Error: "User not found"})
+    }
+    // console.log("user in invoice update", user);
+
+    const invoice = await Invoice.findById(req.params.id);
+
+    console.log("should be equal", invoice);
+    // console.log("shoudl be equal", invoice.user.toString(), " and ", user._id.toString())
+
+    if(invoice.user.toString() !== user._id.toString()) {
+        res.status(401).json({Error: "User not authorized"})
+    }
+
     if (invoice !== null) {
         const update = {};
         if (req.body.name !== undefined) {
@@ -85,7 +104,11 @@ const updateInvoice = async (req, res) => {
         if (req.body.recurring !== undefined) {                    
         update.recurring = req.body.recurring;
         }
-        const result = await invoices.updateInvoices({ _id: req.params.id}, update );
+        update.user = invoice.user
+        const result = await Invoice.updateInvoices({ _id: req.params.id}, update );
+
+       
+
         if (result.length !== 0) {
             res.send({result: result})
         } else {
@@ -98,18 +121,37 @@ const updateInvoice = async (req, res) => {
 
 // Delete ---------------- Delete Invoice @ DELETE /api/invoices/:id
 const deleteInvoice = async (req, res) => {
-    invoices.deleteByID(req.params.id)
-    .then((deletedCount) => {
-        if (deletedCount === 1) {
-            res.status(204).json({ response: 'Purchase document deleted'});
-        } else {
-            res.status(404).json({ error: 'The purchase document was not found'})
-        };
-    })
-    .catch((error) => {
-        console.error(error);
-        res.send({ error: "Request to delete by ID failed" });
-    });
+
+    const user = await User.findById(req.user._id);
+
+    if (!user){
+        res.status(401).json({Error: "User not found"})
+    }
+
+    const invoice = await Invoice.findById(req.params.id);
+    console.log("shoudl be equal", invoice);
+    console.log("shoudl be equal user", invoice.user);
+    // console.log("shoudl be equal", invoice.user.toString(), " and ", user._id)
+
+    if(invoice.user.toString() !== user._id.toString()) {
+        res.status(401).json({Error: "User not authorized"})
+    }
+
+    await invoice.remove()
+
+    res.status(200).json({ message: "invoice deleted", id: req.params.id })
+    // Invoice.deleteByID(req.params.id)
+    // .then((deletedCount) => {
+    //     if (deletedCount === 1) {
+    //         res.status(204).json({ response: 'Purchase document deleted'});
+    //     } else {
+    //         res.status(404).json({ error: 'The purchase document was not found'})
+    //     };
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+    //     res.send({ error: "Request to delete by ID failed" });
+    // });
 };
 
 module.exports = { createInvoice, getInvoices, updateInvoice, deleteInvoice};

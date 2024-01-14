@@ -32,10 +32,10 @@ export default function BasicPopover({purchase, onDelete}) {
         >
         <div>
             <p>Are you sure you want to delete this expense?</p>
-            <Button aria-describedby={id} variant="contained" size="large" onClick={() => onDelete(purchase._id)}>
+            <Button title="Confirm Deletion" aria-describedby={id} variant="contained" size="large" onClick={() => onDelete(purchase._id)}>
                 Yes
             </Button>
-            <Button aria-describedby={id} variant="contained" size="large" onClick={handleClick}>
+            <Button title="Cancel Deletion" aria-describedby={id} variant="contained" size="large" onClick={handleClick}>
                 No
             </Button>
         </div>

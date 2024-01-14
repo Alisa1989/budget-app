@@ -20,23 +20,22 @@ export default function BasicModal({title, buttonIcon, modalTitle, description})
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   return (
     <div>
       <h2>{title}
-      <Button size="large" onClick={handleOpen}>{buttonIcon}</Button>
+      <Button title={title} aria-label= "open modal" size="large" onClick={handleOpen}>{buttonIcon}</Button>
       </h2>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby={title}
+        aria-describedby={description}
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id={title} variant="h6" component="h2">
             {modalTitle}
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id={description} sx={{ mt: 2 }}>
             {description}
           </Typography>
         </Box>

@@ -68,7 +68,7 @@ function CreateBudget() {
                     onChange={onChange}
                     />
                 </label>
-                <button>Add Budget</button>
+                <button title="Add Budget">Add Budget</button>
             </form>
         </div>
     )
