@@ -1,3 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 .App {
   text-align: center;
 }
@@ -17,15 +24,45 @@
   background-color: #7E2DB4;
   height: 10vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
+}
+
+.App-header ul {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+.App-header svg {
+  margin-right: 8px;
+}
+
+.App-header a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
   color: white;
 }
 
-.App-link {
-  color: #7E2DB4;
+.App-header a:hover {
+  color: #b35cee;
+}
+
+.App-header li {
+  line-height: 2.2;
+  margin-left: 20px;
+}
+
+.Nav-link {
+  color: inherit;
+  display: flex;
+  justify-content: space-between;
+  border: 5%;
 }
 
 @keyframes App-logo-spin {

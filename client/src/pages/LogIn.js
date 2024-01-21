@@ -1,4 +1,9 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {login, reset} from '../features/auth/AuthSlice';
+import Spinner from "../components/Spinner";
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,7 +23,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://www.alexandresteinhauslin.dev/">
         Alexandre Steinhauslin
       </Link>{' '}
       {new Date().getFullYear()}
@@ -31,15 +36,63 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function LogIn() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
+  })
+  
+  const {email, password} = formData;
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const {user, isLoading, isError, isSuccess, message} = useSelector(
+    (state) => state.auth
+  ) 
+
+  useEffect(() => {
+    if (isError) {
+      alert(message)
+    }
+
+    if (isSuccess || user) {
+      navigate('/')
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
+
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const userData = {
+      email,
+      password
+    }
+
+    dispatch(login(userData))
+
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
   };
+
+  if (isLoading) {
+    return <Spinner/>
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -57,7 +110,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Log In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -67,6 +120,8 @@ export default function SignIn() {
               id="email"
               label="Email Address"
               name="email"
+              value={email}
+              onChange={onChange}
               autoComplete="email"
               autoFocus
             />
@@ -78,6 +133,8 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
+              value={password}
+              onChange={onChange}
               autoComplete="current-password"
             />
             {/* <FormControlLabel
@@ -91,7 +148,7 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               title= "Coming Soon!"
             >
-              Sign In
+              Log In
             </Button>
             <Grid container>
               <Grid item xs>
@@ -106,7 +163,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2" title= "Coming Soon!">
+                <Link href="/register" variant="body2" title= "Coming Soon!">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

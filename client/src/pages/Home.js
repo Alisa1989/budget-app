@@ -7,47 +7,48 @@ import BasicModal from "../components/BasicModal";
 
 function Home({setEditPurchase}) {
 
-  const [budgets, setBudgets] = useState([])
-  const [expenses, setExpenses] = useState([])
+  // const [budgets, setBudgets] = useState([])
+  // const [expenses, setExpenses] = useState([])
   
-  const loadPurchases = async () => {
-    const response = await fetch('/api/invoices', {
-      method: 'get'
-    });
-    const expenses = await response.json();
-    setExpenses(expenses)
-  }
+  // const loadPurchases = async () => {
+  //   const response = await fetch('/api/invoices', {
+  //     method: 'get'
+  //   });
+  //   const expenses = await response.json();
+  //   console.log("response json", response.json)
+  //   setExpenses(expenses)
+  // }
 
-  // console.log("expenses", expenses)
+  // // console.log("expenses", expenses)
   
-  const loadBudgets = async () => {
-    const response = await fetch('/api/budgets', {
-      method: 'get'
-    });
-    const list = await response.json();
-    setBudgets(list)
-  }
+  // const loadBudgets = async () => {
+  //   const response = await fetch('/api/budgets', {
+  //     method: 'get'
+  //   });
+  //   const list = await response.json();
+  //   setBudgets(list)
+  // }
   
-  useEffect(() => {
-    loadPurchases();
-    loadBudgets();
-  }, [])
+  // useEffect(() => {
+  //   loadPurchases();
+  //   loadBudgets();
+  // }, [])
   
-  //expenses grouped by category
-  const groupedExpenses = expenses.reduce((expense, item) => {
-    const category = item.category;
-    const price = item.price;
-    if (!expense.hasOwnProperty(category)) {
-      expense[category] = 0;
-    }
+  // //expenses grouped by category
+  // const groupedExpenses = expenses.reduce((expense, item) => {
+  //   const category = item.category;
+  //   const price = item.price;
+  //   if (!expense.hasOwnProperty(category)) {
+  //     expense[category] = 0;
+  //   }
     
-    expense[category] += price;
-    return expense;
-  }, {});
+  //   expense[category] += price;
+  //   return expense;
+  // }, {});
   
   return (
     <Container>
-        <BasicModal 
+        {/* <BasicModal 
           title = "Getting Started"
           buttonIcon= "Getting Started"
           modalTitle="First Things First"
@@ -69,7 +70,7 @@ function Home({setEditPurchase}) {
           groupedExpenses = {groupedExpenses}
           />
       </Stack>
-    </Box>
+    </Box> */}
     </Container>
   );
 }

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LuBird } from 'react-icons/lu' 
 
 // import HomePage from './pages/HomePage';
 // import Expenses from './pages/Expenses';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
 import Home from './pages/Home';
-import SignIn from './pages/SignIn';
+import LogIn from './pages/LogIn';
+import Register from './pages/Register';
+import ErrorPage from './pages/ErrorPage';
+import Header from './components/Header';
 
 import './App.css';
 
@@ -19,24 +21,19 @@ function App() {
     
     <div className="App">
       <BrowserRouter>
-
-        <header className="App-header">
-          <h1> 
-            <LuBird/>
-            Budgee 
-            {/* <img src={logo} className="App-logo" alt="logo" /> */}
-          </h1>
-        </header>
+        <Header/>
 
         <main>
           <section className="App-article">
             <Routes>
                 {/* <Route path="/" element={<HomePage />} /> */}
                 {/* <Route path="/" element={<Expenses setEditPurchase={setEditPurchase}/>} />  */}
-                <Route path="/signin" element={<SignIn/>} /> 
+                <Route path="/login" element={<LogIn/>} /> 
+                <Route path="/register" element={<Register/>} /> 
                 <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
                 <Route path="/edit-purchase" element={<EditPage purchase={purchase}/>} /> 
+                <Route path="*" element={<ErrorPage/>}/>
 
             </Routes>
           </section>
