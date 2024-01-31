@@ -1,8 +1,6 @@
 notes.txt
-node_modules
+node_modules/
 package-lock.json
-
-.gitignore
 
 *.env
 *.gitignore
