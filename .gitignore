@@ -1,5 +1,8 @@
-.notes
-.package-lock.json
-.gitignore
-.node_modules
+notes.txt
 node_modules
+package-lock.json
+
+.gitignore
+
+*.env
+*.gitignore
