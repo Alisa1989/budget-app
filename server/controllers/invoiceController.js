@@ -5,9 +5,11 @@ const User = require('../models/userModel');
 // Create ------- Creates Invoice @ POST /api/invoices/
 const createInvoice = async ( req, res) => {
     console.log("user in controller", req.user)
+    console.log("body in controller", req.body)
+    console.log("date in controller", req.body.date)
     Invoice.createInvoice(
         req.body.name, 
-        req.body.date.slice(0,10), 
+        req.body.date, 
         req.body.notes, 
         req.body.price, 
         req.body.category,
@@ -68,9 +70,7 @@ const updateInvoice = async (req, res) => {
     // console.log("params", req.params)
     // console.log("body", req.body)
 
-    const user = await User.findById(req.user._id);
-
-    if (!user){
+    if (!req.user){
         res.status(401).json({Error: "User not found"})
     }
     // console.log("user in invoice update", user);
@@ -80,7 +80,7 @@ const updateInvoice = async (req, res) => {
     console.log("should be equal", invoice);
     // console.log("shoudl be equal", invoice.user.toString(), " and ", user._id.toString())
 
-    if(invoice.user.toString() !== user._id.toString()) {
+    if(invoice.user.toString() !== req.user._id.toString()) {
         res.status(401).json({Error: "User not authorized"})
     }
 
@@ -122,9 +122,7 @@ const updateInvoice = async (req, res) => {
 // Delete ---------------- Delete Invoice @ DELETE /api/invoices/:id
 const deleteInvoice = async (req, res) => {
 
-    const user = await User.findById(req.user._id);
-
-    if (!user){
+    if (!req.user){
         res.status(401).json({Error: "User not found"})
     }
 
@@ -133,7 +131,7 @@ const deleteInvoice = async (req, res) => {
     console.log("shoudl be equal user", invoice.user);
     // console.log("shoudl be equal", invoice.user.toString(), " and ", user._id)
 
-    if(invoice.user.toString() !== user._id.toString()) {
+    if(invoice.user.toString() !== req.user._id.toString()) {
         res.status(401).json({Error: "User not authorized"})
     }
 

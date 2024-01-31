@@ -73,3 +73,58 @@
     transform: rotate(360deg);
   }
 }
+
+.home-container {
+  width: 80vw;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-container label{
+  padding: 1%;
+}
+
+.form-container input, select{
+  border-radius: 5px;
+  padding: 1%;
+  margin: 1%;
+}
+
+.form-container button {
+  max-width: 50%;
+  left: 25%;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    display: none;
+  }
+}
+
+table {
+  overflow-x: auto;
+  display: block;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.expenses-table th, td {
+  border: 1px solid;
+  padding: 2px;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+
+  max-height: 400px;
+  position: "relative";
+  height: "30%";
+  width: "auto";
+}

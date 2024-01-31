@@ -1,6 +1,8 @@
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 import PieChart from "../components/PieChart";
+import CreatePage from "./CreatePage";
+
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -32,8 +34,8 @@ function PieChartPage({groupedExpenses, grandTotal}) {
             {
                 label: "Expenses",
                 data: Object.values(groupedExpenses),
-                backgroundColor: BGColors.slice(0, Object.keys(groupedExpenses).length),
-                hoverBackgroundColor: BGHoverColors.slice(0, Object.keys(groupedExpenses).length),
+                backgroundColor: BGColors,
+                hoverBackgroundColor: BGHoverColors,
                 borderColor: "black",
                 borderWidth: 2
             }
@@ -47,8 +49,9 @@ function PieChartPage({groupedExpenses, grandTotal}) {
                 modalTitle="The Pie Chart"
                 description="Gives you an overall view of your spending habits"
                 />
-      <PieChart chartData={chartData}/>
+                  <PieChart chartData={chartData}/>
       {`Grand Total ${grandTotal}`}
+      <CreatePage/>
     </div>
   );
 }

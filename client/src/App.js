@@ -10,6 +10,7 @@ import LogIn from './pages/LogIn';
 import Register from './pages/Register';
 import ErrorPage from './pages/ErrorPage';
 import Header from './components/Header';
+import BudgeePage from './pages/BudgeePage';
 
 import './App.css';
 
@@ -28,6 +29,7 @@ function App() {
             <Routes>
                 {/* <Route path="/" element={<HomePage />} /> */}
                 {/* <Route path="/" element={<Expenses setEditPurchase={setEditPurchase}/>} />  */}
+                <Route path="/budgee" element={<BudgeePage/>} /> 
                 <Route path="/login" element={<LogIn/>} /> 
                 <Route path="/register" element={<Register/>} /> 
                 <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 

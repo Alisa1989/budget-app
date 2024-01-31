@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux';
+import { updateExpense } from '../features/expenses/ExpenseSlice';
+
+
 
 const EditPage = ({ purchase }) => {
     const [purchaseEdit, setPurchaseEdit] = useState({
@@ -12,22 +16,26 @@ const EditPage = ({ purchase }) => {
     })
 
 const navigate = useNavigate();
+const dispatch = useDispatch();
+
 
 const editPurchase = async () => {
+    
 
-    const response = await fetch(`/api/invoices/${purchase._id}`, {
-        method: 'PUT',
-        body: JSON.stringify(Math.round(purchaseEdit * 100) / 100),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    if (response.status === 200) {
-        alert("Your purchase was modified succesfully.")
-    } else {
-        const errMessage = await response.json();
-        alert(`Failed to modify purchase. Status ${response.status}. ${errMessage}.`)
-    }
+    // const response = await fetch(`/api/invoices/${purchase._id}`, {
+    //     method: 'PUT',
+    //     body: JSON.stringify(Math.round(purchaseEdit * 100) / 100),
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    // });
+    // if (response.status === 200) {
+    //     alert("Your purchase was modified succesfully.")
+    // } else {
+    //     const errMessage = await response.json();
+    //     alert(`Failed to modify purchase. Status ${response.status}. ${errMessage}.`)
+    // }
+    dispatch(updateExpense(purchaseEdit))
     navigate("/")
 };
 
@@ -130,7 +138,7 @@ const onChange = (e) => {
                             </select>
                             </label>
                         </td>
-                        <td>
+                        {/* <td>
                             <label htmlFor="recurring">
                             <input 
                             type="checkbox" 
@@ -140,7 +148,7 @@ const onChange = (e) => {
                             onChange={onChange}
                             />
                         </label>
-                        </td>
+                        </td> */}
                         <td><button title="Confirm Changes" className="wait" onClick={editPurchase}>Modify</button></td>
                     </tr>
                 </tbody>

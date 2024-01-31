@@ -1,76 +1,87 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Expenses from "./Expenses";
 import Budgets from "./Budgets";
-import { Box, Container, Stack } from "@mui/material"
+import { Box, Container, Grid} from "@mui/material";
 import PieChartPage from "./PieChartPage";
 import BasicModal from "../components/BasicModal";
+// import CreatePage from "./CreatePage";
+import Spinner from "../components/Spinner";
+import { getExpenses, reset } from "../features/expenses/ExpenseSlice";
 
-function Home({setEditPurchase}) {
+function Home({ setEditPurchase }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // const [budgets, setBudgets] = useState([])
-  // const [expenses, setExpenses] = useState([])
-  
-  // const loadPurchases = async () => {
-  //   const response = await fetch('/api/invoices', {
-  //     method: 'get'
-  //   });
-  //   const expenses = await response.json();
-  //   console.log("response json", response.json)
-  //   setExpenses(expenses)
-  // }
+  const { user } = useSelector((state) => state.auth);
+  const { expenses, isLoading, isError, message } = useSelector(
+    (state) => state.expenses
+  );
 
-  // // console.log("expenses", expenses)
-  
-  // const loadBudgets = async () => {
-  //   const response = await fetch('/api/budgets', {
-  //     method: 'get'
-  //   });
-  //   const list = await response.json();
-  //   setBudgets(list)
-  // }
-  
-  // useEffect(() => {
-  //   loadPurchases();
-  //   loadBudgets();
-  // }, [])
-  
-  // //expenses grouped by category
-  // const groupedExpenses = expenses.reduce((expense, item) => {
-  //   const category = item.category;
-  //   const price = item.price;
-  //   if (!expense.hasOwnProperty(category)) {
-  //     expense[category] = 0;
-  //   }
-    
-  //   expense[category] += price;
-  //   return expense;
-  // }, {});
-  
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    if (!user) {
+      navigate("/login");
+    }
+
+    dispatch(getExpenses());
+    return () => {
+      dispatch(reset());
+    };
+  }, [user, navigate, isError, message, dispatch]);
+
+  const [budgets, setBudgets] = useState([]);
+
+  //expenses grouped by category
+  const groupedExpenses = expenses.reduce((expense, item) => {
+    const category = item.category;
+    const price = item.price;
+    if (!expense.hasOwnProperty(category)) {
+      expense[category] = 0;
+    }
+    expense[category] += price;
+    return expense;
+  }, {});
+
+  const grandTotal = expenses.reduce((total, item) => {
+    return total + item.price;
+  }, 0)
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <Container>
-        {/* <BasicModal 
-          title = "Getting Started"
-          buttonIcon= "Getting Started"
-          modalTitle="First Things First"
-          description="Start by adding a purchase from the list of expenses. The budget setting feature is not essential."
-        />
-    <Box sx={{margin: "20px", padding: "20px"}}>
-      <Stack sx = {{flexDirection: { xs: "column", md: "row"}}} >
-        <Expenses 
-          setEditPurchase={setEditPurchase} 
-          setExpenses = {setExpenses}
-          expenses = {expenses}
+      <BasicModal
+        title=""
+        buttonIcon="Getting Started"
+        modalTitle="First Things First"
+        description="Start by adding a purchase from the list of expenses. The budget setting feature is not essential."
+      />
+      <Box sx={{display: {xs:"none", md:"block"}, padding: {sm:0, md:0.5}}}>
+        <h2>Welcome {user && user.email} to your expenses dashboard</h2>
+      </Box>
+      {/* <CreatePage /> */}
+      <Grid container sx={{flexFlow: {xs: "column", sm:"column", md: "row" }}}>
+        <Grid item order={{xs:2, sm: 2, md: 1}} width={1}>
+          <Expenses
+            setEditPurchase={setEditPurchase}
+            // setExpenses = {setExpenses}
+            expenses={expenses}
           />
-        
-        <PieChartPage
-          groupedExpenses = {groupedExpenses}
-          />
-        <Budgets 
-          budgets = {budgets}
-          groupedExpenses = {groupedExpenses}
-          />
-      </Stack>
-    </Box> */}
+        </Grid>
+        <Grid item order={{xs:1, sm: 1, md: 2}} width={1}>
+          <PieChartPage grandTotal={grandTotal} groupedExpenses={groupedExpenses} />
+        </Grid>
+        <Grid item order={{xs:3, sm: 3, md: 3}}>
+          <Budgets budgets={budgets} groupedExpenses={groupedExpenses} />
+        </Grid>
+      </Grid>
     </Container>
   );
 }

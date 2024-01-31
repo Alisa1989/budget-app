@@ -23,7 +23,7 @@ export default function BasicModal({title, buttonIcon, modalTitle, description})
   return (
     <div>
       <h2>{title}
-      <Button title={title} aria-label= "open modal" size="large" onClick={handleOpen}>{buttonIcon}</Button>
+      <Button title={title} aria-label= "open modal" size="small" onClick={handleOpen}>{buttonIcon}</Button>
       </h2>
       <Modal
         open={open}

@@ -27,7 +27,7 @@ function Header() {
         </Link>
         {/* <img src={logo} className="App-logo" alt="logo" /> */}
       </h1>
-        <ul className="Nav-list">
+        {/* <ul className="Nav-list">
           {user ? (
             <li>
             <button className="btn-logout" onClick={onLogout}>
@@ -49,7 +49,7 @@ function Header() {
             </>
           )}
             
-        </ul>
+        </ul> */}
     </header>
   );
 }

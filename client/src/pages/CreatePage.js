@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux';
+import { createExpense } from '../features/expenses/ExpenseSlice';
+import Button from '@mui/material/Button';
+
 
 function CreatePage() {
   const [purchase, setPurchase] = useState({
@@ -11,25 +15,39 @@ function CreatePage() {
     recurring: false,
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const addPurchase = async () => {
-     
-    const response = await fetch("/api/invoices", {
-      method: "POST",
-      body: JSON.stringify(Math.round(purchase * 100) / 100),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    dispatch(createExpense(purchase))
+    setPurchase({
+      name: "",
+      price: "",
+      notes: "",
+      date: "",
+      category: "",
+      recurring: false,
+    })
+  }
 
-    if (response.status === 201) {
-      alert("Your purchase was succesfully added.");
-    } else {
-      alert("Failed to add a row, check that all fields are present");
-    }
-    navigate("/");
-  };
+  // const addPurchase = async () => {
+     
+  //   const response = await fetch("/api/invoices", {
+  //     method: "POST",
+  //     body: JSON.stringify(Math.round(purchase * 100) / 100),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+
+  //   if (response.status === 201) {
+  //     alert("Your purchase was succesfully added.");
+  //   } else {
+  //     alert("Failed to add a row, check that all fields are present");
+  //   }
+  //   navigate("/");
+  // };
 
   const onChange = (e) => {
     e.persist();
@@ -45,25 +63,10 @@ function CreatePage() {
   };
 
   return (
-    <>
-      <h2>Log a Purchase</h2>
-      <p>What did you buy today?</p>
-      <table id="purchases">
-        <caption>Add a purchase to the table</caption>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Notes</th>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Recurring</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
+    <div className ="form-container">
+        <h3>Add an Expense to the table</h3>
               <label htmlFor="name">
+                Name
                 <input
                   type="text"
                   id="name"
@@ -74,9 +77,8 @@ function CreatePage() {
                   autoFocus
                 />
               </label>
-            </td>
-            <td>
               <label htmlFor="price">
+                Price
                 <input
                   type="text"
                   id="price"
@@ -87,9 +89,8 @@ function CreatePage() {
                   onChange={onChange}
                 />
               </label>
-            </td>
-            <td>
               <label htmlFor="notes">
+                Notes
                 <input
                   type="text"
                   id="notes"
@@ -99,9 +100,8 @@ function CreatePage() {
                   onChange={onChange}
                 />
               </label>
-            </td>
-            <td>
               <label htmlFor="date">
+                Date
                 <input
                   type="date"
                   id="date"
@@ -112,9 +112,8 @@ function CreatePage() {
                   pattern="\d{2}-\d{2}-\d{2}"
                 />
               </label>
-            </td>
-            <td>
               <label htmlFor="category">
+                Category
                 <select
                   name="category"
                   id="category"
@@ -131,9 +130,8 @@ function CreatePage() {
                   <option value="other">Other</option>
                 </select>
               </label>
-            </td>
-            <td>
-              <label htmlFor="recurring">
+              {/* <label htmlFor="recurring">
+                Recurring
                 <input
                   type="checkbox"
                   id="recurring"
@@ -141,17 +139,11 @@ function CreatePage() {
                   checked={purchase.recurring}
                   onChange={onChange}
                 />
-              </label>
-            </td>
-            <td>
-              <button title="Add Purchase" className="wait" onClick={addPurchase}>
+              </label> */}
+              <Button title="Add Purchase" className="wait" variant="contained" size="large" onClick={addPurchase}>
                 Add
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </>
+              </Button>
+    </div>
   );
 }
 

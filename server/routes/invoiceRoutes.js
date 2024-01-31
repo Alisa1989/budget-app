@@ -3,7 +3,7 @@ const router = express.Router();
 const { createInvoice, getInvoices, updateInvoice, deleteInvoice } = require('../controllers/invoiceController')
 const {protect} = require('../middleware/authMiddleware.js');
 
-
+// /api/invoices
 router.post("/", protect, createInvoice);
 router.get("/", protect, getInvoices);
 router.put("/:id", protect, updateInvoice);

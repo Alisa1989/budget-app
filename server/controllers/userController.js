@@ -106,16 +106,18 @@ const loginUser = asyncHandler (async (req, res) => {
 });
 
 
-// @desc get user
+// @desc get user data
 // @route POST /api/users/getuser
 // @access private
 const getUser = asyncHandler (async (req, res) => {
-    const {_id, email} = await User.findOne(req.user.id)
+    // const {_id, email} = await User.findOne(req.user.id)
 
-    res.status(200).json({
-        id: _id,
-        email
-    })
+    // res.status(200).json({
+    //     id: _id,
+    //     email
+    // })
+
+    res.status(200).json(req.user)
 });
 
 

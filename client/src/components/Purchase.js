@@ -2,10 +2,11 @@ import React from "react";
 import { MdOutlineEditNote } from 'react-icons/md';
 import BasicPopover from "./BasicPopover";
 
-function Purchase({ purchase, onEdit, onDelete }) {
+function Purchase({ purchase, onEdit}) {
     // console.log("purchase category", purchase.category)
+    console.log("key in purchase", purchase._id)
     return (
-        <tr>
+        <tr key={purchase._id}>
             <td title="Click to edit this purchase"><MdOutlineEditNote onClick={() => onEdit(purchase)} /></td>
             <td title="The name of the object or service you bought">{purchase.name}</td>
             <td title="How much did you pay?">${purchase.price}</td>
@@ -16,7 +17,7 @@ function Purchase({ purchase, onEdit, onDelete }) {
             <td title="Click to delete this purchase.">
                 <BasicPopover 
                     purchase={purchase}
-                    onDelete={onDelete}
+                    // onDelete={onDelete}
                 />
                 </td>
         </tr>

@@ -4,6 +4,8 @@ import authService from './AuthService'
 // get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'))
 
+// axios.defaults.baseURL = 'http://localhost:3000';
+
 const initialState = {
     user: user ? user : null,
     isError: false,
