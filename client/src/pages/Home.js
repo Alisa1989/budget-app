@@ -21,7 +21,7 @@ function Home({ setEditPurchase }) {
 
   useEffect(() => {
     if (isError) {
-      console.log(message);
+      console.log(message, isError);
     }
 
     if (!user) {

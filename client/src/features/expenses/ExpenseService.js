@@ -36,9 +36,14 @@ const updateExpense = async (expenseId, expenseData, token) => {
       },
     };
   
-    const response = await axios.put(API_URL + expenseId, expenseData, config)
+    try {
+      const response = await axios.put(API_URL + expenseId, expenseData, config)
+      console.log('Expense service response', response);
+      return response.data
+    } catch (error) {
+      console.error('Error updating: ', error.response);
+    }
   
-    return response.data
   };
 
 // delete user expense

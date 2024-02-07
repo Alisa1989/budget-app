@@ -1,11 +1,11 @@
 const asyncHandler = require('express-async-handler');
-const budget = require('../models/budgetModel');
+const Budget = require('../models/budgetModel');
 
 
 // Create ----------------------
 const createBudget = ( req, res) => {
     console.log("req.body", req.body)
-    budget.createBudget(
+    Budget.createBudget(
         req.body.amount,
         req.body.category,
         req.user
@@ -25,13 +25,14 @@ function budgetFilter(req) {
     if (req.body.category !== undefined) {
         filter.category = req.body.category;
     }
+    filter.user = req.user._id;
     return filter;
 }
 
 const getBudgets = asyncHandler( async ( req, res) => {
     // console.log(req.body)
     const filter = budgetFilter(req);
-    const result = await budget.findBudget(filter);
+    const result = await Budget.findBudget(filter);
     if (result.length !== 0) {
         res.send(result)
     } else {
@@ -41,15 +42,25 @@ const getBudgets = asyncHandler( async ( req, res) => {
 
 // Update ----------------
 const updateBudget = async (req, res) => {
-    // console.log("params", req.params)
+    console.log("params", req.params)
     // console.log("body", req.body)
-    const budget = await budget.findByCategory(req.params.category);
+    if (!req.user){
+        res.status(401).json({Error: "User not found"})
+    }
+    const budget = await Budget.findById(req.params.id);
+    console.log("budget", budget)
+
+
+    if(budget.user.toString() !== req.user._id.toString()) {
+        res.status(401).json({Error: "User not authorized"})
+    }
     if (budget !== null) {
         const update = {};
         if (req.body.amount !== undefined) {
         update.amount = req.body.amount;
         }
-        const result = await budget.updateInvoices({ category: req.params.category}, update );
+        update.user = budget.user
+        const result = await Budget.updateBudget({ category: req.body.category}, update );
         if (result.length !== 0) {
             res.send({result: result})
         } else {

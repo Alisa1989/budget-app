@@ -2,10 +2,20 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import { updateExpense } from '../features/expenses/ExpenseSlice';
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
+const EditPage = () => {
+    const paramsId = useParams();
+    
+    const { expenses, message } = useSelector((state) => state.expenses);
+    console.log("expenses", expenses)
+    console.log("params", paramsId.id);
+    const purchase = expenses.find(item => Number(paramsId.id === item._id));
+    
+    console.log("purchase", purchase)
 
-const EditPage = ({ purchase }) => {
     const [purchaseEdit, setPurchaseEdit] = useState({
         name: purchase.name,
         price: purchase.price,
@@ -18,9 +28,8 @@ const EditPage = ({ purchase }) => {
 const navigate = useNavigate();
 const dispatch = useDispatch();
 
-
 const editPurchase = async () => {
-    
+    console.log("in edit purchase", purchaseEdit)
 
     // const response = await fetch(`/api/invoices/${purchase._id}`, {
     //     method: 'PUT',
@@ -35,7 +44,7 @@ const editPurchase = async () => {
     //     const errMessage = await response.json();
     //     alert(`Failed to modify purchase. Status ${response.status}. ${errMessage}.`)
     // }
-    dispatch(updateExpense(purchaseEdit))
+    dispatch(updateExpense(purchase._id, purchaseEdit))
     navigate("/")
 };
 

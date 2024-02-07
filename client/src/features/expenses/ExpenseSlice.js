@@ -42,11 +42,11 @@ export const getExpenses = createAsyncThunk('api/invoices/getAll', async(_, thun
 })
 
 // update expense
-export const updateExpense = createAsyncThunk('api/invoices/update', async(id, thunkAPI) =>
+export const updateExpense = createAsyncThunk('api/invoices/update', async(id, expenseData, thunkAPI) =>
 {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await ExpenseService.updateExpenses(id, token)
+        return await ExpenseService.updateExpense(id, expenseData, token)
     } catch (error) {
         const message = 
         (error.response &&

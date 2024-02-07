@@ -34,7 +34,7 @@ function App() {
                 <Route path="/register" element={<Register/>} /> 
                 <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
-                <Route path="/edit-purchase" element={<EditPage purchase={purchase}/>} /> 
+                <Route path="/edit-purchase/:id" element={<EditPage purchase={purchase}/>} /> 
                 <Route path="*" element={<ErrorPage/>}/>
 
             </Routes>

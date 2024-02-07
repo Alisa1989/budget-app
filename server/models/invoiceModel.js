@@ -8,8 +8,6 @@ const invoiceSchema = mongoose.Schema(
         required: true,
         ref: 'User'
     },
-    // name, price, date, recurring, notes
-    // user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
     name: { type: String, required: true },
     date: { type: Date, default: Date.now },
     notes: { type: String, required: false },
