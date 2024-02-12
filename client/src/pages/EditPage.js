@@ -29,7 +29,7 @@ const navigate = useNavigate();
 const dispatch = useDispatch();
 
 const editPurchase = async () => {
-    console.log("in edit purchase", purchaseEdit)
+    console.log("in edit purchase", purchase._id ," and ", purchaseEdit)
 
     // const response = await fetch(`/api/invoices/${purchase._id}`, {
     //     method: 'PUT',
@@ -44,7 +44,7 @@ const editPurchase = async () => {
     //     const errMessage = await response.json();
     //     alert(`Failed to modify purchase. Status ${response.status}. ${errMessage}.`)
     // }
-    dispatch(updateExpense(purchase._id, purchaseEdit))
+    dispatch(updateExpense({id: purchase._id, expenseData: purchaseEdit}))
     navigate("/")
 };
 
@@ -54,7 +54,7 @@ const onChange = (e) => {
     // console.log(e.target.name, e.target.value)
     e.persist();
     const newFormData = {
-        ...purchase,
+        ...purchaseEdit,
         [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
         
     };

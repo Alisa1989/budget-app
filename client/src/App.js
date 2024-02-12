@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // import HomePage from './pages/HomePage';
@@ -11,12 +11,19 @@ import Register from './pages/Register';
 import ErrorPage from './pages/ErrorPage';
 import Header from './components/Header';
 import BudgeePage from './pages/BudgeePage';
-
+import { useDispatch } from 'react-redux';
+import { getExpenses } from './features/expenses/ExpenseSlice';
 import './App.css';
 
 function App() {
 
   const [purchase, setEditPurchase] = useState([])
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    console.log("hi")
+    dispatch(getExpenses());
+  },[dispatch])
 
   return (
     

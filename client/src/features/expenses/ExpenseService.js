@@ -30,6 +30,7 @@ const getExpenses = async (token) => {
 
 // update user expense
 const updateExpense = async (expenseId, expenseData, token) => {
+  console.log("in expnse service update expense", expenseId, " AND ", expenseData, " AND ", token)
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,

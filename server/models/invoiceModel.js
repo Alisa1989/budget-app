@@ -54,9 +54,8 @@ const updateInvoices = async (
   id,
   { name, date, notes, price, category, recurring, user } 
 ) => {
-  await Invoice.replaceOne(
-    { _id: id
-    },
+  const result = await Invoice.findByIdAndUpdate(
+    id,
     {
       user: user,
       name: name,
@@ -65,17 +64,12 @@ const updateInvoices = async (
       price: price,
       category: category,
       recurring: recurring,
+    }, 
+    {
+      new: true
     }
   );
-  return {
-    user: user,
-    name: name,
-    date: date,
-    notes: notes,
-    price: price,
-    category: category,
-    recurring: recurring
-  };
+  return result;
 };
 
 // Delete ------

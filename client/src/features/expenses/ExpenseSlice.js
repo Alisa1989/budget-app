@@ -10,6 +10,7 @@ const initialState = {
 }
 
 export const createExpense = createAsyncThunk('api/invoices', async(expenseData, thunkAPI) => {
+    console.log("thunk API in create", thunkAPI)
     try {
         const token = thunkAPI.getState().auth.user.token
         return await ExpenseService.createExpense(expenseData, token)
@@ -42,12 +43,16 @@ export const getExpenses = createAsyncThunk('api/invoices/getAll', async(_, thun
 })
 
 // update expense
-export const updateExpense = createAsyncThunk('api/invoices/update', async(id, expenseData, thunkAPI) =>
+export const updateExpense = createAsyncThunk('api/invoices/update', async({id, expenseData}, thunkAPI) =>
 {
+    console.log("update expnese in expense slice being called", id, "and", expenseData)
     try {
+        console.log("thunkAPI", thunkAPI)
         const token = thunkAPI.getState().auth.user.token
+        console.log("token in Slice: ", token)
         return await ExpenseService.updateExpense(id, expenseData, token)
     } catch (error) {
+        console.error(error)
         const message = 
         (error.response &&
              error.response.data &&
@@ -134,7 +139,8 @@ export const expenseSlice = createSlice({
             .addCase(updateExpense.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.expenses = action.payload
+                const matchingIndex = state.expenses.findIndex((entry)=> entry._id === action.payload._id)
+                state.expenses[matchingIndex] = action.payload
             })
             .addCase(updateExpense.rejected, (state, action) => {
                 state.isLoading = false

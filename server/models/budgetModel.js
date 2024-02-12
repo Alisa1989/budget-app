@@ -51,7 +51,7 @@ const findById = async(id) => {
 
 // Update
 const updateBudget = async ({category}, {amount, user}) => {
-    await Budget.replaceOne({category: category}, {
+    result = await Budget.replaceOne({category: category}, {
         user: user,
         category: category,
         amount: amount

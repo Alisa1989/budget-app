@@ -8,7 +8,7 @@ import PieChartPage from "./PieChartPage";
 import BasicModal from "../components/BasicModal";
 // import CreatePage from "./CreatePage";
 import Spinner from "../components/Spinner";
-import { getExpenses, reset } from "../features/expenses/ExpenseSlice";
+import { reset } from "../features/expenses/ExpenseSlice";
 
 function Home({ setEditPurchase }) {
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ function Home({ setEditPurchase }) {
       navigate("/login");
     }
 
-    dispatch(getExpenses());
     return () => {
       dispatch(reset());
     };

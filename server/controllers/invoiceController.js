@@ -27,28 +27,28 @@ const createInvoice = async ( req, res) => {
 
 // Retrieve ------------- Gets Invoices @ GET /api/invoices/
 function invoiceFilter(req) {
-    let filter = {};
-    if (req.body._id !== undefined) {
-        filter.id = req.body._id;
-    }
-    if (req.body.name !== undefined) {
-        filter.name = req.body.name;
-    }
-    if (req.body.price !== undefined) {
-        filter.price = req.body.price;
-    }
-    if (req.body.date !== undefined) {
-        filter.date = req.body.date;
-    }
-    if (req.body.notes !== undefined) {
-        filter.notes = req.body.notes;
-    }
-    if (req.body.category !== undefined) {
-        filter.category = req.body.category;
-    }
-    if (req.body.recurring !== undefined) {
-        filter.recurring = req.body.recurring;
-    }
+    let filter = {...req.body};
+    // if (req.body._id !== undefined) {
+    //     filter.id = req.body._id;
+    // }
+    // if (req.body.name !== undefined) {
+    //     filter.name = req.body.name;
+    // }
+    // if (req.body.price !== undefined) {
+    //     filter.price = req.body.price;
+    // }
+    // if (req.body.date !== undefined) {
+    //     filter.date = req.body.date;
+    // }
+    // if (req.body.notes !== undefined) {
+    //     filter.notes = req.body.notes;
+    // }
+    // if (req.body.category !== undefined) {
+    //     filter.category = req.body.category;
+    // }
+    // if (req.body.recurring !== undefined) {
+    //     filter.recurring = req.body.recurring;
+    // }
     filter.user = req.user._id;
     return filter;
 }
@@ -85,37 +85,35 @@ const updateInvoice = async (req, res) => {
     }
 
     if (invoice !== null) {
-        const update = {};
-        if (req.body.name !== undefined) {
-        update.name = req.body.name;
-        }
-        if (req.body.price !== undefined) {
-        update.price = req.body.price;
-        }
-        if (req.body.notes !== undefined) {
-        update.notes = req.body.notes;
-        }
-        if (req.body.date !== undefined) {
-        update.date = req.body.date;
-        }
-        if (req.body.category !== undefined) {
-        update.category = req.body.category;
-        }
-        if (req.body.recurring !== undefined) {                    
-        update.recurring = req.body.recurring;
-        }
+        const update = {...req.body};
+        // if (req.body.name !== undefined) {
+        // update.name = req.body.name;
+        // }
+        // if (req.body.price !== undefined) {
+        // update.price = req.body.price;
+        // }
+        // if (req.body.notes !== undefined) {
+        // update.notes = req.body.notes;
+        // }
+        // if (req.body.date !== undefined) {
+        // update.date = req.body.date;
+        // }
+        // if (req.body.category !== undefined) {
+        // update.category = req.body.category;
+        // }
+        // if (req.body.recurring !== undefined) {                    
+        // update.recurring = req.body.recurring;
+        // }
         update.user = invoice.user
-        const result = await Invoice.updateInvoices({ _id: req.params.id}, update );
+        const result = await Invoice.updateInvoices(req.params.id, update);
 
-       
-
-        if (result.length !== 0) {
-            res.send({result: result})
+        if (result) {
+            res.json(result)
         } else {
             res.status(404).json({Error: "Invoice not found"})
         }
     } else {
-        res.sendFile({ Error: "The document was not found, check id number" });
+        res.status(404).json({ Error: "The document was not found, check id number" });
     }
 };
 
