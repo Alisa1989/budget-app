@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_URL = '/api/users/'
 
-axios.defaults.baseURL = 'http://localhost:3000';
+// axios.defaults.baseURL = 'http://localhost:3000';
 
 //register user
 const register = async (userData) => {
