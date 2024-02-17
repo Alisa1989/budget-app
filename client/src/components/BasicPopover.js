@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { deleteExpense } from '../features/expenses/ExpenseSlice';
 
 
-export default function BasicPopover({purchase }) {
+export default function BasicPopover({item }) {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -37,7 +37,7 @@ export default function BasicPopover({purchase }) {
         >
         <div>
             <p>Are you sure you want to delete this expense?</p>
-            <Button title="Confirm Deletion" aria-describedby={id} variant="contained" size="large" onClick={() => dispatch(deleteExpense(purchase._id))}>
+            <Button title="Confirm Deletion" aria-describedby={id} variant="contained" size="large" onClick={() => dispatch(deleteExpense(item._id))}>
                 Yes
             </Button>
             <Button title="Cancel Deletion" aria-describedby={id} variant="contained" size="large" onClick={handleClick}>

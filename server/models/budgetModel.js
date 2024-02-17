@@ -50,17 +50,20 @@ const findById = async(id) => {
 }
 
 // Update
-const updateBudget = async ({category}, {amount, user}) => {
-    result = await Budget.replaceOne({category: category}, {
+const updateBudget = async (
+    id, 
+    {amount, user, category}) => {
+    result = await Budget.findByIdAndUpdate(
+        id, 
+        {
         user: user,
         category: category,
         amount: amount
+    },
+    {
+        new: true
     });
-    return {
-        user: user,
-        category: category,
-        amount: amount
-    }
+    return result
 }
 
 module.exports = {createBudget, findBudget, findById, updateBudget};

@@ -42,8 +42,7 @@ const getBudgets = asyncHandler( async ( req, res) => {
 
 // Update ----------------
 const updateBudget = async (req, res) => {
-    console.log("params", req.params)
-    // console.log("body", req.body)
+    // console.log("params", req.params)
     if (!req.user){
         res.status(401).json({Error: "User not found"})
     }
@@ -55,12 +54,9 @@ const updateBudget = async (req, res) => {
         res.status(401).json({Error: "User not authorized"})
     }
     if (budget !== null) {
-        const update = {};
-        if (req.body.amount !== undefined) {
-        update.amount = req.body.amount;
-        }
+        const update = {...req.body};
         update.user = budget.user
-        const result = await Budget.updateBudget({ category: req.body.category}, update );
+        const result = await Budget.updateBudget(req.params.id, update );
         if (result.length !== 0) {
             res.send({result: result})
         } else {
@@ -71,4 +67,21 @@ const updateBudget = async (req, res) => {
     }
 };
 
-module.exports = {createBudget, getBudgets, updateBudget};
+//Delete ---------------------------------
+const deleteBudget = async (req, res) => {
+    if (!req.user){
+        res.status(401).json({Error: "User not found"})
+    }
+
+    const budget = await Budget.findById(req.params.id);
+
+    if(budget.user.toString() !== req.user._id.toString()) {
+        res.status(401).json({Error: "User not authorized"})
+    }
+
+    await budget.remove()
+
+    res.status(200).json({ message: "budget deleted", id: req.params.id })
+}
+
+module.exports = {createBudget, getBudgets, updateBudget, deleteBudget};

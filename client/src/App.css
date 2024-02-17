@@ -128,3 +128,14 @@ table {
   height: "30%";
   width: "auto";
 }
+
+.single-budget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.single-budget-frame {
+  display: flex;
+  flex-direction: row;
+}

@@ -1,9 +1,46 @@
-import React from "react";
+import React, {useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 import CreateBudget from "../components/CreateBudget";
+import { useSelector, useDispatch } from "react-redux";
+import { reset } from "../features/budgets/BudgetSlice";
+import Spinner from "../components/Spinner";
+import { Button } from '@mui/material';
+import SingleBudget from "../components/SingleBudget";
 
-const Budgets = ({budgets, groupedExpenses}) => {
+
+const Budgets = ({groupedExpenses}) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { budgets, isLoading, isError, message } = useSelector(
+    (state) => state.budgets
+  );
+
+  const handleEditBudget = () => {
+    navigate(`/edit-budget`)
+  }
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message, isError);
+    }
+
+    if (!user) {
+      navigate("/login");
+    }
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [user, navigate, isError, message, dispatch]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+  console.log("budgets", budgets)
 
   return (
     <div>
@@ -13,18 +50,10 @@ const Budgets = ({budgets, groupedExpenses}) => {
                 modalTitle="Budgets"
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
-        <button title="Edit Budgets">Edit Budgets</button>
-        {budgets.map((item, index) =>{
-            return (
-
-                <div key={index}>
-                    <label htmlFor="file">{item.category}</label>
-
-                    <progress id="file" max={item.amount} value={groupedExpenses[item.category] || 0 }>{groupedExpenses[item.category] || 0 }%</progress>
-                {/* {console.log("max", item.amount, "value", groupedExpenses[item.category])} */}
-            </div>
-            )
-        })}
+        <Button title="Edit Budgets" className="wait" variant="contained" size="small" onClick={handleEditBudget}>Edit Budgets</Button>
+        {budgets && budgets.map((item, index) =>(
+          <SingleBudget item={item} key={index} groupedExpenses={groupedExpenses}/>
+        ))}
         <CreateBudget />
     </div>
   )

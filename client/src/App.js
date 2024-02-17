@@ -13,6 +13,8 @@ import Header from './components/Header';
 import BudgeePage from './pages/BudgeePage';
 import { useDispatch } from 'react-redux';
 import { getExpenses } from './features/expenses/ExpenseSlice';
+import { getBudgets } from './features/budgets/BudgetSlice';
+import BudgetEditPage from './pages/BudgetEditPage';
 import './App.css';
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
   useEffect(()=> {
     console.log("hi")
     dispatch(getExpenses());
+    dispatch(getBudgets());
   },[dispatch])
 
   return (
@@ -42,6 +45,7 @@ function App() {
                 <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
                 <Route path="/edit-purchase/:id" element={<EditPage purchase={purchase}/>} /> 
+                <Route path="/edit-budget" element={<BudgetEditPage/>} /> 
                 <Route path="*" element={<ErrorPage/>}/>
 
             </Routes>

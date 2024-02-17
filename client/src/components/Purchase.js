@@ -21,7 +21,7 @@ function Purchase({ purchase, onEdit}) {
             <td title="Is this a recurring purchase?"> {purchase.recurring === true ? "Yes" : "No" }</td>
             <td title="Click to delete this purchase.">
                 <BasicPopover 
-                    purchase={purchase}
+                    item={purchase}
                     // onDelete={onDelete}
                 />
                 </td>

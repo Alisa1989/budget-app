@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import {useDispatch} from 'react-redux';
+import { createBudget } from '../features/budgets/BudgetSlice';
+import { Button } from '@mui/material';
 
 function CreateBudget() {
     const [budget, setBudget] = useState({
@@ -6,20 +9,15 @@ function CreateBudget() {
         amount: ""
     })
 
-    const addBudget = async() => {
-        const response = await fetch('/api/budgets', {
-            method: 'POST',
-            body: JSON.stringify(budget),
-            headers: {
-            'Content-Type': 'application/json',
-            },
-        });
-        if (response.status === 201) {
-            alert("Your budget was succesfully added.")
-        } else {
-            alert("Failed to add a row, check that all fields are present")
-        }
+    const dispatch = useDispatch();
 
+    const addBudget = async() => {
+        console.log("form budget", budget)
+        dispatch(createBudget(budget))
+        setBudget({
+            category: "",
+            amount: ""
+        })
     }
 
     const onChange = (e) => {
@@ -35,11 +33,11 @@ function CreateBudget() {
 
 
     return (
-        <div>
-            <div>CreateBudget</div>
+        <div className='form-container'>
+            <h3>Add a budget</h3>
             <form onSubmit={addBudget}>
                 <label htmlFor="category">
-                    category
+                    Select Category
                     <select
                         name="category"
                         id="category"
@@ -68,7 +66,7 @@ function CreateBudget() {
                     onChange={onChange}
                     />
                 </label>
-                <button title="Add Budget">Add Budget</button>
+                <Button title="Add Budget" className="wait" variant="contained" size="small" onClick={addBudget}>Add Budget</Button>
             </form>
         </div>
     )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Expenses from "./Expenses";
@@ -33,8 +33,6 @@ function Home({ setEditPurchase }) {
     };
   }, [user, navigate, isError, message, dispatch]);
 
-  const [budgets, setBudgets] = useState([]);
-
   //expenses grouped by category
   const groupedExpenses = expenses.reduce((expense, item) => {
     const category = item.category;
@@ -53,6 +51,7 @@ function Home({ setEditPurchase }) {
   if (isLoading) {
     return <Spinner />;
   }
+  console.log("expenses", expenses)
 
   return (
     <Container>
@@ -78,7 +77,7 @@ function Home({ setEditPurchase }) {
           <PieChartPage grandTotal={grandTotal} groupedExpenses={groupedExpenses} />
         </Grid>
         <Grid item order={{xs:3, sm: 3, md: 3}}>
-          <Budgets budgets={budgets} groupedExpenses={groupedExpenses} />
+          <Budgets groupedExpenses={groupedExpenses} />
         </Grid>
       </Grid>
     </Container>

@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import ExpenseService from './ExpenseService'
+import expenseService from './ExpenseService'
 
 const initialState = {
     expenses: [],
@@ -13,7 +13,7 @@ export const createExpense = createAsyncThunk('api/invoices', async(expenseData,
     console.log("thunk API in create", thunkAPI)
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await ExpenseService.createExpense(expenseData, token)
+        return await expenseService.createExpense(expenseData, token)
     } catch (error) {
         const message = 
         (error.response &&
@@ -30,7 +30,7 @@ export const getExpenses = createAsyncThunk('api/invoices/getAll', async(_, thun
 {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await ExpenseService.getExpenses(token)
+        return await expenseService.getExpenses(token)
     } catch (error) {
         const message = 
         (error.response &&
@@ -50,7 +50,7 @@ export const updateExpense = createAsyncThunk('api/invoices/update', async({id, 
         console.log("thunkAPI", thunkAPI)
         const token = thunkAPI.getState().auth.user.token
         console.log("token in Slice: ", token)
-        return await ExpenseService.updateExpense(id, expenseData, token)
+        return await expenseService.updateExpense(id, expenseData, token)
     } catch (error) {
         console.error(error)
         const message = 
@@ -68,7 +68,7 @@ export const deleteExpense = createAsyncThunk('api/invoices/delete', async(id, t
 {
     try {
         const token = thunkAPI.getState().auth.user.token
-        return await ExpenseService.deleteExpense(id, token)
+        return await expenseService.deleteExpense(id, token)
     } catch (error) {
         const message = 
         (error.response &&
