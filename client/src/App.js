@@ -45,7 +45,7 @@ function App() {
                 <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
                 <Route path="/edit-purchase/:id" element={<EditPage purchase={purchase}/>} /> 
-                <Route path="/edit-budget" element={<BudgetEditPage/>} /> 
+                <Route path="/edit-budget/:id" element={<BudgetEditPage/>} /> 
                 <Route path="*" element={<ErrorPage/>}/>
 
             </Routes>

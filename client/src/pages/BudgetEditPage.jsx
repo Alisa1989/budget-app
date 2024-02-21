@@ -1,38 +1,41 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {useDispatch} from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import { updateBudget } from "../features/budgets/BudgetSlice";
 import { useSelector } from "react-redux";
 
 function BudgetEditPage() {
-    const { budgets, message } = useSelector((state) => state.expenses);
-    console.log("budgets", budgets)
+    const paramsId = useParams()
+    const { budgets, message } = useSelector((state) => state.budgets);
+    // console.log("budgets", budgets)
+    const budget = budgets.find(item => Number(paramsId.id === item._id))
+    // console.log("budget", budget)
     
     const [budgetEdit, setBudgetEdit] = useState({
-        // amount: budget.amount,
-        // category: budget.category,
+        amount: budget.amount,
+        category: budget.category,
     })
 
-const navigate = useNavigate();
-const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-const editbudget = async () => {
-    // dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
-    dispatch(updateBudget({budgetData: budgetEdit}))
-    navigate("/")
-};
-
-
-const onChange = (e) => {
-    e.persist();
-    const newFormData = {
-        ...budgetEdit,
-        [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
-        
+    const editbudget = async () => {
+        // dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
+        dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
+        navigate("/")
     };
-    // console.log("newFormData", newFormData)
-    setBudgetEdit(newFormData);
-  };
+
+
+    const onChange = (e) => {
+        e.persist();
+        const newFormData = {
+            ...budgetEdit,
+            [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
+            
+        };
+        // console.log("newFormData", newFormData)
+        setBudgetEdit(newFormData);
+    };
 
     return(
         <>

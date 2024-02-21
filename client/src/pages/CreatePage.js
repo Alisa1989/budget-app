@@ -140,7 +140,7 @@ function CreatePage() {
                   onChange={onChange}
                 />
               </label> */}
-              <Button title="Add Purchase" className="wait" variant="contained" size="large" onClick={addPurchase}>
+              <Button title="Add Purchase" className="wait add-expense-button" variant="contained" size="large" onClick={addPurchase}>
                 Add
               </Button>
     </div>

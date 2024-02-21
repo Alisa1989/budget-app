@@ -2,12 +2,18 @@ import React from "react";
 import { MdOutlineEditNote } from 'react-icons/md';
 import BasicPopover from "./BasicPopover";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { deleteExpense } from '../features/expenses/ExpenseSlice';
 
-function Purchase({ purchase, onEdit}) {
+function Purchase({ purchase}) {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const handleEdit = () => {
         navigate(`/edit-purchase/${purchase._id}`);
+    }
+    const expenseDeletion = (id) => {
+        dispatch(deleteExpense(id))
     }
 
     return (
@@ -22,7 +28,7 @@ function Purchase({ purchase, onEdit}) {
             <td title="Click to delete this purchase.">
                 <BasicPopover 
                     item={purchase}
-                    // onDelete={onDelete}
+                    handleDeletion={expenseDeletion}
                 />
                 </td>
         </tr>

@@ -6,7 +6,6 @@ import CreateBudget from "../components/CreateBudget";
 import { useSelector, useDispatch } from "react-redux";
 import { reset } from "../features/budgets/BudgetSlice";
 import Spinner from "../components/Spinner";
-import { Button } from '@mui/material';
 import SingleBudget from "../components/SingleBudget";
 
 
@@ -18,10 +17,6 @@ const Budgets = ({groupedExpenses}) => {
   const { budgets, isLoading, isError, message } = useSelector(
     (state) => state.budgets
   );
-
-  const handleEditBudget = () => {
-    navigate(`/edit-budget`)
-  }
 
   useEffect(() => {
     if (isError) {
@@ -50,7 +45,6 @@ const Budgets = ({groupedExpenses}) => {
                 modalTitle="Budgets"
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
-        <Button title="Edit Budgets" className="wait" variant="contained" size="small" onClick={handleEditBudget}>Edit Budgets</Button>
         {budgets && budgets.map((item, index) =>(
           <SingleBudget item={item} key={index} groupedExpenses={groupedExpenses}/>
         ))}

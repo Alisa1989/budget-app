@@ -2,12 +2,9 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import { MdOutlineDeleteForever} from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import { deleteExpense } from '../features/expenses/ExpenseSlice';
 
 
-export default function BasicPopover({item }) {
-  const dispatch = useDispatch();
+export default function BasicPopover({item, handleDeletion }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -37,7 +34,8 @@ export default function BasicPopover({item }) {
         >
         <div>
             <p>Are you sure you want to delete this expense?</p>
-            <Button title="Confirm Deletion" aria-describedby={id} variant="contained" size="large" onClick={() => dispatch(deleteExpense(item._id))}>
+            <Button title="Confirm Deletion" aria-describedby={id} variant="contained" size="large" onClick={() => 
+              handleDeletion(item._id)}>
                 Yes
             </Button>
             <Button title="Cancel Deletion" aria-describedby={id} variant="contained" size="large" onClick={handleClick}>

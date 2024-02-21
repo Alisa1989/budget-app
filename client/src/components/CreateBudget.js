@@ -34,10 +34,10 @@ function CreateBudget() {
 
     return (
         <div className='form-container'>
-            <h3>Add a budget</h3>
+            <h3>To add a budget</h3>
             <form onSubmit={addBudget}>
                 <label htmlFor="category">
-                    Select Category
+                    Select a Category
                     <select
                         name="category"
                         id="category"

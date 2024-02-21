@@ -81,6 +81,8 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .form-container label{
@@ -93,7 +95,7 @@
   margin: 1%;
 }
 
-.form-container button {
+.add-expense-button {
   max-width: 50%;
   left: 25%;
 }

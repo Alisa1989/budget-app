@@ -54,6 +54,22 @@ export const updateBudget = createAsyncThunk('api/budgets/update', async ({id, b
     }
 })
 
+//delete budget
+export const deleteBudget = createAsyncThunk('api/budgets/delete', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await budgetService.deleteBudget(id, token)
+    } catch (error) {
+        const message = 
+        (error.response &&
+             error.response.data &&
+              error.response.data.message) || 
+              error.message || 
+              error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const budgetSlice = createSlice({
     name: 'budget',
     initialState,
@@ -107,7 +123,21 @@ export const budgetSlice = createSlice({
             state.isError = true
             state.message = action.payload
         })
-}
+        .addCase(deleteBudget.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(deleteBudget.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            // need to filter so it can be removed from the UI right when we delete it
+            state.budgets = state.budgets.filter((budget) => budget._id !== action.payload.id)
+        })
+        .addCase(deleteBudget.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+    }   
 })
 
 export const {reset} = budgetSlice.actions

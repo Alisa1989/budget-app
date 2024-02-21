@@ -44,10 +44,23 @@ const updateBudget = async (budgetId, budgetData, token) => {
     }
 }
 
+// delete user budget
+const deleteBudget = async (budgetId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const response = await axios.delete(API_URL + budgetId, config)
+    return response.data
+}
+
 const budgetService = {
     createBudget,
     getBudgets,
-    updateBudget
+    updateBudget,
+    deleteBudget
 }
 
 export default budgetService
