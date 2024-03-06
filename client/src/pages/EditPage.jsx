@@ -10,12 +10,10 @@ const EditPage = () => {
     const paramsId = useParams();
     
     const { expenses, message } = useSelector((state) => state.expenses);
-    console.log("expenses", expenses)
-    console.log("params", paramsId.id);
     const purchase = expenses.find(item => Number(paramsId.id === item._id));
-    
+    console.log("paramsId", paramsId)
+    console.log("expenses", expenses)
     console.log("purchase", purchase)
-
     const [purchaseEdit, setPurchaseEdit] = useState({
         name: purchase.name,
         price: purchase.price,
@@ -29,43 +27,24 @@ const navigate = useNavigate();
 const dispatch = useDispatch();
 
 const editPurchase = async () => {
-    console.log("in edit purchase", purchase._id ," and ", purchaseEdit)
-
-    // const response = await fetch(`/api/invoices/${purchase._id}`, {
-    //     method: 'PUT',
-    //     body: JSON.stringify(Math.round(purchaseEdit * 100) / 100),
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    // });
-    // if (response.status === 200) {
-    //     alert("Your purchase was modified succesfully.")
-    // } else {
-    //     const errMessage = await response.json();
-    //     alert(`Failed to modify purchase. Status ${response.status}. ${errMessage}.`)
-    // }
-    dispatch(updateExpense({id: purchase._id, expenseData: purchaseEdit}))
+    await dispatch(updateExpense({id: purchase._id, expenseData: purchaseEdit}))
     navigate("/")
 };
 
 
 const onChange = (e) => {
-    // console.log("date", purchase.date)
-    // console.log(e.target.name, e.target.value)
     e.persist();
     const newFormData = {
         ...purchaseEdit,
         [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
         
     };
-    // console.log("newFormData", newFormData)
     setPurchaseEdit(newFormData);
   };
 
     return(
         <>
             <h2>Modify Invoice</h2>
-            {/* <p>What did you buy today?</p> */}
             <table id="purchases">
                 <caption>Add a purchase to the table</caption>
                 <thead>
@@ -148,7 +127,6 @@ const onChange = (e) => {
                             </label>
                         </td>
                         {/* <td>
-                            <label htmlFor="recurring">
                             <input 
                             type="checkbox" 
                             id="recurring" 

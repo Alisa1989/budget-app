@@ -25,7 +25,6 @@ const Invoice = mongoose.model("Invoice", invoiceSchema);
 // INVOICE
 // Create ------------
 const createInvoice = async (name, date, notes, price, category, recurring, user) => {
-    console.log("user.id", user.id)
   const invoice = new Invoice({
     name: name,
     date: date,

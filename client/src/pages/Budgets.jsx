@@ -27,15 +27,14 @@ const Budgets = ({groupedExpenses}) => {
       navigate("/login");
     }
 
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
   }, [user, navigate, isError, message, dispatch]);
 
   if (isLoading) {
     return <Spinner />;
   }
-  console.log("budgets", budgets)
 
   return (
     <div>

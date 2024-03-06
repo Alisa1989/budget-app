@@ -1,4 +1,5 @@
 import axios from "axios";
+import authenticatedRequest from "../../utils/authenticatedRequest";
 
 const API_URL = "/api/invoices/";
 
@@ -16,7 +17,7 @@ const createExpense = async (expenseData, token) => {
 };
 
 // get user expenses
-const getExpenses = async (token) => {
+const getExpenses = authenticatedRequest(async (token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -26,10 +27,10 @@ const getExpenses = async (token) => {
   const response = await axios.get(API_URL, config)
 
   return response.data
-};
+});
 
 // update user expense
-const updateExpense = async (expenseId, expenseData, token) => {
+const updateExpense = authenticatedRequest(async (expenseId, expenseData, token) => {
   console.log("in expnse service update expense", expenseId, " AND ", expenseData, " AND ", token)
     const config = {
       headers: {
@@ -39,13 +40,12 @@ const updateExpense = async (expenseId, expenseData, token) => {
   
     try {
       const response = await axios.put(API_URL + expenseId, expenseData, config)
-      console.log('Expense service response', response);
       return response.data
     } catch (error) {
       console.error('Error updating: ', error.response);
     }
   
-  };
+  });
 
 // delete user expense
 const deleteExpense = async (expenseId, token) => {

@@ -79,6 +79,7 @@ export const budgetSlice = createSlice({
             state.isSuccess = false
             state.isError = false
             state.message = ''
+            state.budgets = []
         }
     },
     extraReducers: (builder) => {
@@ -115,8 +116,8 @@ export const budgetSlice = createSlice({
         .addCase(updateBudget.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            const matchingIndex = state.budgets.findIndex((entry)=> entry._id === action.payload._id)
-            state.budgets[matchingIndex] = action.payload
+            const matchingIndex = state.budgets.findIndex((entry)=> entry._id === action.payload.result._id)
+            state.budgets[matchingIndex] = action.payload.result
         })
         .addCase(updateBudget.rejected, (state, action) => {
             state.isLoading = false

@@ -12,7 +12,6 @@ function CreateBudget() {
     const dispatch = useDispatch();
 
     const addBudget = async() => {
-        console.log("form budget", budget)
         dispatch(createBudget(budget))
         setBudget({
             category: "",
@@ -22,15 +21,12 @@ function CreateBudget() {
 
     const onChange = (e) => {
         e.persist();
-        // console.log("input changed!", e.target.value);
         const newFormData = {
             ...budget,
             [e.target.name]: e.target.value
         };
-        // console.log("newFormData", newFormData);
         setBudget(newFormData);
       };
-
 
     return (
         <div className='form-container'>

@@ -15,9 +15,7 @@ function CreatePage() {
     recurring: false,
   });
 
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const addPurchase = async () => {
     dispatch(createExpense(purchase))
@@ -31,34 +29,13 @@ function CreatePage() {
     })
   }
 
-  // const addPurchase = async () => {
-     
-  //   const response = await fetch("/api/invoices", {
-  //     method: "POST",
-  //     body: JSON.stringify(Math.round(purchase * 100) / 100),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-
-  //   if (response.status === 201) {
-  //     alert("Your purchase was succesfully added.");
-  //   } else {
-  //     alert("Failed to add a row, check that all fields are present");
-  //   }
-  //   navigate("/");
-  // };
-
   const onChange = (e) => {
     e.persist();
-    // console.log("input changed!", e.target.value);
     const newFormData = {
       ...purchase,
       [e.target.name]:
         e.target.type === "checkbox" ? e.target.checked : e.target.value,
-      // [e.target.name]: e.target.value
     };
-    // console.log("newFormData", newFormData);
     setPurchase(newFormData);
   };
 

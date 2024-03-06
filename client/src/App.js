@@ -11,22 +11,35 @@ import Register from './pages/Register';
 import ErrorPage from './pages/ErrorPage';
 import Header from './components/Header';
 import BudgeePage from './pages/BudgeePage';
-import { useDispatch } from 'react-redux';
-import { getExpenses } from './features/expenses/ExpenseSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getExpenses, reset } from './features/expenses/ExpenseSlice';
 import { getBudgets } from './features/budgets/BudgetSlice';
 import BudgetEditPage from './pages/BudgetEditPage';
+import { reset as resetExpenses} from './features/expenses/ExpenseSlice';
+import { reset as resetBudgets } from './features/budgets/BudgetSlice';
 import './App.css';
+import Footer from './components/Footer';
 
 function App() {
 
   const [purchase, setEditPurchase] = useState([])
   const dispatch = useDispatch();
 
+  const { user } = useSelector(
+    (state) => state.auth
+  );
+
+
   useEffect(()=> {
-    console.log("hi")
-    dispatch(getExpenses());
-    dispatch(getBudgets());
-  },[dispatch])
+    if (user) {
+      console.log("Dispatched getExpenses and getBudgets")
+      dispatch(getExpenses());
+      dispatch(getBudgets());
+    } else {
+      dispatch(resetExpenses());
+      dispatch(resetBudgets());
+    }
+  },[dispatch, user])
 
   return (
     
@@ -51,7 +64,7 @@ function App() {
             </Routes>
           </section>
         </main>
-        
+        <Footer/>
         </BrowserRouter>
       </div>
     );

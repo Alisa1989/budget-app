@@ -25,7 +25,6 @@ function Header() {
             <LuBird/>
             Budgee
         </Link>
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
       </h1>
         {/* <ul className="Nav-list">
           {user ? (

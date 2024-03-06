@@ -6,7 +6,6 @@ const config = require("config");
 
 const User = require('../models/userModel');
 
-
 // @desc Register new user
 // @route POST /api/users/register
 // @access public
@@ -44,8 +43,6 @@ const registerUser = asyncHandler (async (req, res) => {
         //Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        console.log("Hashed Password: ", hashedPassword);
-        
         const user = await User.create({
             email,
             password: hashedPassword
@@ -110,13 +107,6 @@ const loginUser = asyncHandler (async (req, res) => {
 // @route POST /api/users/getuser
 // @access private
 const getUser = asyncHandler (async (req, res) => {
-    // const {_id, email} = await User.findOne(req.user.id)
-
-    // res.status(200).json({
-    //     id: _id,
-    //     email
-    // })
-
     res.status(200).json(req.user)
 });
 

@@ -6,7 +6,6 @@ import Budgets from "./Budgets";
 import { Box, Container, Grid} from "@mui/material";
 import PieChartPage from "./PieChartPage";
 import BasicModal from "../components/BasicModal";
-// import CreatePage from "./CreatePage";
 import Spinner from "../components/Spinner";
 import { reset } from "../features/expenses/ExpenseSlice";
 
@@ -23,17 +22,18 @@ function Home({ setEditPurchase }) {
     if (isError) {
       console.log(message, isError);
     }
-
+    console.log("user", user)
     if (!user) {
       navigate("/login");
     }
 
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
   }, [user, navigate, isError, message, dispatch]);
 
   //expenses grouped by category
+  // TO DO - make this into a function and pass it down
   const groupedExpenses = expenses.reduce((expense, item) => {
     const category = item.category;
     const price = item.price;
@@ -51,7 +51,6 @@ function Home({ setEditPurchase }) {
   if (isLoading) {
     return <Spinner />;
   }
-  console.log("expenses", expenses)
 
   return (
     <Container>
@@ -64,12 +63,10 @@ function Home({ setEditPurchase }) {
       <Box sx={{display: {xs:"none", md:"block"}, padding: {sm:0, md:0.5}}}>
         <h2>Welcome {user && user.email} to your expenses dashboard</h2>
       </Box>
-      {/* <CreatePage /> */}
       <Grid container sx={{flexFlow: {xs: "column", sm:"column", md: "row" }}}>
         <Grid item order={{xs:2, sm: 2, md: 1}} width={1}>
           <Expenses
             setEditPurchase={setEditPurchase}
-            // setExpenses = {setExpenses}
             expenses={expenses}
           />
         </Grid>

@@ -141,3 +141,54 @@ table {
   display: flex;
   flex-direction: row;
 }
+
+progress[value] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color: var(--progress-color);
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+progress[value]::-webkit-progress-bar {
+  background-color: lightgray;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.piechart-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.piechart-buttons svg{
+  width: 45px;
+  height: 100px;
+  font-weight: bolder;
+  font-size: large;
+  font-size: 22pt;
+}
+
+.piechart-buttons {
+  position: fixed;
+  bottom: 0;
+}
+
+.piechart-buttons.left {
+  left: 0;
+}
+
+.piechart-buttons.right {
+  right: 0;
+}
+
+/* .icon-arrow-left {
+  size: large;
+  font-size: 22pt;
+  font-weight: bolder;
+} */

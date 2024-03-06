@@ -7,9 +7,7 @@ import { useSelector } from "react-redux";
 function BudgetEditPage() {
     const paramsId = useParams()
     const { budgets, message } = useSelector((state) => state.budgets);
-    // console.log("budgets", budgets)
     const budget = budgets.find(item => Number(paramsId.id === item._id))
-    // console.log("budget", budget)
     
     const [budgetEdit, setBudgetEdit] = useState({
         amount: budget.amount,
@@ -20,8 +18,7 @@ function BudgetEditPage() {
     const dispatch = useDispatch();
 
     const editbudget = async () => {
-        // dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
-        dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
+        await dispatch(updateBudget({id: budget._id, budgetData: budgetEdit}))
         navigate("/")
     };
 
@@ -33,7 +30,6 @@ function BudgetEditPage() {
             [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
             
         };
-        // console.log("newFormData", newFormData)
         setBudgetEdit(newFormData);
     };
 

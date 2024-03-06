@@ -3,18 +3,12 @@ import ExpenseTable from "../components/ExpenseTable";
 import { useNavigate } from "react-router-dom";
 import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
-// import { UseSelector, UseDispatch } from "react-redux";
 
-function Expenses({ setEditPurchase, expenses, setExpenses }) { 
+function Expenses({expenses}) { 
     const navigate = useNavigate();
 
-
-    // const dispatch = UseDispatch()
-
     // UPDATE a single purchase
-    const onEditPurchase = async purchase => {
-        // console.log("purchase", purchase);
-        // setEditPurchase(purchase);
+    const onEditPurchase = () => {
         navigate("/edit-purchase");
     }
 
@@ -35,7 +29,6 @@ function Expenses({ setEditPurchase, expenses, setExpenses }) {
             ) : (<h3>You haven't recorded any expense</h3>)}
         </div>
     )
-
 }
 
 export default Expenses;

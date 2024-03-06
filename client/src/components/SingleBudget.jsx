@@ -19,16 +19,37 @@ function SingleBudget({ item, index, groupedExpenses }) {
       dispatch(deleteBudget(id))
   }
 
+  const progressThresholds = [
+    {
+      upperLimit: 0.5,
+      color: "green"
+    },
+    {
+      upperLimit: 0.75,
+      color: "orange"
+    },
+    {
+      upperLimit: 1,
+      color: "darkred"
+    }
+  ];
+
+  let value = groupedExpenses[item.category] || 0
+
   return (
     <div key={index} className="single-budget-frame">
                   <span title="Click to edit this budget"><MdOutlineEditNote onClick={() => handleEdit()} /></span>
       <div className="single-budget">
 
       <label htmlFor="file">{item.category}</label>
-      <progress
+      <progress className="progress-bar"
         id="file"
+        title={`${value} of ${item.amount}`}
         max={item.amount}
-        value={groupedExpenses[item.category] || 0}
+        value={value > item.amount ? value = item.amount : value}
+        style={{
+          "--progress-color": progressThresholds.find(({ upperLimit }) => upperLimit >= value/item.amount)?.color,
+        }}
         >
         {groupedExpenses[item.category] || 0}%
       </progress>

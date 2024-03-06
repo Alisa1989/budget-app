@@ -4,7 +4,6 @@ const Budget = require('../models/budgetModel');
 
 // Create ----------------------
 const createBudget = ( req, res) => {
-    console.log("req.body", req.body)
     Budget.createBudget(
         req.body.amount,
         req.body.category,
@@ -30,7 +29,6 @@ function budgetFilter(req) {
 }
 
 const getBudgets = asyncHandler( async ( req, res) => {
-    // console.log(req.body)
     const filter = budgetFilter(req);
     const result = await Budget.findBudget(filter);
     if (result.length !== 0) {
@@ -42,7 +40,6 @@ const getBudgets = asyncHandler( async ( req, res) => {
 
 // Update ----------------
 const updateBudget = async (req, res) => {
-    // console.log("params", req.params)
     if (!req.user){
         res.status(401).json({Error: "User not found"})
     }
