@@ -59,7 +59,7 @@ function ExpenseTable({ expenses, onEdit }) {
             Category
           </button>
             </th>
-          <th>Recurring</th>
+          {/* <th>Recurring</th> */}
           <th>Delete</th>
         </tr>
       </thead>

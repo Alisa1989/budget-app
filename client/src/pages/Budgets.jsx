@@ -9,7 +9,7 @@ import Spinner from "../components/Spinner";
 import SingleBudget from "../components/SingleBudget";
 
 
-const Budgets = ({groupedExpenses}) => {
+const Budgets = ({groupedExpenses, currentMonthExpenses}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ const Budgets = ({groupedExpenses}) => {
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
         {budgets && budgets.map((item, index) =>(
-          <SingleBudget item={item} key={index} groupedExpenses={groupedExpenses}/>
+          <SingleBudget item={item} key={index} currentMonthExpenses={currentMonthExpenses}/>
         ))}
         <CreateBudget />
     </div>

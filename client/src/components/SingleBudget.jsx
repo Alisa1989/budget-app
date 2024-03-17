@@ -6,9 +6,7 @@ import { useDispatch } from 'react-redux';
 import { deleteBudget } from "../features/budgets/BudgetSlice";
 
 
-function SingleBudget({ item, index, groupedExpenses }) {
-    console.log("item in singleBudget", item)
-    
+function SingleBudget({ item, index, currentMonthExpenses }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -34,7 +32,12 @@ function SingleBudget({ item, index, groupedExpenses }) {
     }
   ];
 
-  let value = groupedExpenses[item.category] || 0
+  let value = 0
+  if (currentMonthExpenses){
+    value = currentMonthExpenses[item.category] || 0
+  } else {
+    value = 0
+  }
 
   return (
     <div key={index} className="single-budget-frame">
@@ -51,10 +54,9 @@ function SingleBudget({ item, index, groupedExpenses }) {
           "--progress-color": progressThresholds.find(({ upperLimit }) => upperLimit >= value/item.amount)?.color,
         }}
         >
-        {groupedExpenses[item.category] || 0}%
+        {value || 0}%
       </progress>
       </div>
-      {/* {console.log("max", item.amount, "value", groupedExpenses[item.category])} */}
       <span title="Click to delete this budget.">
         <BasicPopover 
           item = {item}

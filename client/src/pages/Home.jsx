@@ -1,4 +1,4 @@
-import React, { useEffect} from "react";
+import React, { useEffect, useState, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Expenses from "./Expenses";
@@ -7,15 +7,23 @@ import { Box, Container, Grid} from "@mui/material";
 import PieChartPage from "./PieChartPage";
 import BasicModal from "../components/BasicModal";
 import Spinner from "../components/Spinner";
-import { reset } from "../features/expenses/ExpenseSlice";
+import LineGraphPage from "./LineGraphPage";
+import StackedBarChartPage from "./StackedBarChartPage";
 
 function Home({ setEditPurchase }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+  const [currentMonthExpenses, setCurrentMonthExpenses] = useState()
+
   const { user } = useSelector((state) => state.auth);
-  const { expenses, isLoading, isError, message } = useSelector(
+  const { expenses, isLoading:isExpensesLoading, isError, message } = useSelector(
     (state) => state.expenses
+  );
+  const { isLoading: isBudgetLoading} = useSelector(
+    (state) => state.budgets
   );
 
   useEffect(() => {
@@ -27,28 +35,33 @@ function Home({ setEditPurchase }) {
       navigate("/login");
     }
 
-    // return () => {
-    //   dispatch(reset());
-    // };
-  }, [user, navigate, isError, message, dispatch]);
+    setCurrentMonthExpenses(expensesByMonthByCategory[String(selectedYear) + "-" + String(selectedMonth+1).padStart(2, '0')])
 
-  //expenses grouped by category
-  // TO DO - make this into a function and pass it down
-  const groupedExpenses = expenses.reduce((expense, item) => {
-    const category = item.category;
-    const price = item.price;
-    if (!expense.hasOwnProperty(category)) {
-      expense[category] = 0;
-    }
-    expense[category] += price;
-    return expense;
-  }, {});
+  }, [user, navigate, isError, message, dispatch, selectedMonth, selectedYear]);
 
-  const grandTotal = expenses.reduce((total, item) => {
-    return total + item.price;
-  }, 0)
+  const uniqueYearMonths = [...new Set(expenses.map(({date}) => date.split("-").slice(0,2).join("-")))].sort();
 
-  if (isLoading) {
+  // creates an object with the Year-Month as keys and as the value an array of the relative categories: amounts for those months
+  const expensesByMonthByCategory = useMemo(() => {
+    return uniqueYearMonths.reduce((acc, yearMonth) => ({
+    ...acc,
+    [yearMonth]: expenses.filter(({date}) => date.startsWith(yearMonth)).reduce((eAcc, {category, price}) => ({
+      ...eAcc,
+      [category]: price + (eAcc[category] || 0)
+    }), {})
+  }), {})}, [expenses, uniqueYearMonths]);
+
+  console.log("expensesByMonthByCategory", expensesByMonthByCategory)
+//   console.log("date: " + String(selectedYear) + "-" + String(selectedMonth).padStart(2, '0'))
+// console.log("selected month expense", expensesByMonthByCategory[String(selectedYear) + "-" + String(selectedMonth+1).padStart(2, '0')])
+
+//object of months that will be displayed in the line graph and stacked bar chart. These will be the last 6 months including the current one. The key will be the month in YYYY-MM format while the value will be the labels.
+
+//TO DO
+
+
+
+  if (isExpensesLoading || isBudgetLoading) {
     return <Spinner />;
   }
 
@@ -61,7 +74,7 @@ function Home({ setEditPurchase }) {
         description="Start by adding a purchase from the list of expenses. The budget setting feature is not essential."
       />
       <Box sx={{display: {xs:"none", md:"block"}, padding: {sm:0, md:0.5}}}>
-        <h2>Welcome {user && user.email} to your expenses dashboard</h2>
+        <h2>Welcome {user && user.email.split('@')[0].toUpperCase()} to your expenses dashboard</h2>
       </Box>
       <Grid container sx={{flexFlow: {xs: "column", sm:"column", md: "row" }}}>
         <Grid item order={{xs:2, sm: 2, md: 1}} width={1}>
@@ -71,10 +84,30 @@ function Home({ setEditPurchase }) {
           />
         </Grid>
         <Grid item order={{xs:1, sm: 1, md: 2}} width={1}>
-          <PieChartPage grandTotal={grandTotal} groupedExpenses={groupedExpenses} />
+          <PieChartPage 
+          selectedMonth={selectedMonth} 
+          setSelectedMonth={setSelectedMonth} 
+          selectedYear={selectedYear} 
+          setSelectedYear={setSelectedYear}
+          />
         </Grid>
         <Grid item order={{xs:3, sm: 3, md: 3}}>
-          <Budgets groupedExpenses={groupedExpenses} />
+          <Budgets 
+          selectedMonth={selectedMonth} 
+          currentMonthExpenses={currentMonthExpenses}
+          />
+        </Grid>
+        </Grid>
+        <Grid container sx={{flexFlow: {xs: "column", sm:"column", md: "row" }}}>
+        <Grid>
+          <LineGraphPage
+          expensesByMonthByCategory={expensesByMonthByCategory}
+          />
+        </Grid>
+        <Grid>
+          <StackedBarChartPage
+          expensesByMonthByCategory={expensesByMonthByCategory}
+          />
         </Grid>
       </Grid>
     </Container>

@@ -11,35 +11,42 @@ import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function PieChartPage() {
+function PieChartPage({selectedMonth, setSelectedMonth, selectedYear, setSelectedYear}) {
   
   const { expenses, isLoading, isError, message } = useSelector(
     (state) => state.expenses
   );
 
-  let [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
-  let currentYear = new Date().getFullYear()
-  console.log("month selected", currentMonth)
   let [monthlyExpenses, setMonthlyExpenses] = useState([])
   
   const monthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
   const previousMonth = () => {
-    setCurrentMonth(currentMonth -= 1)
+    if(selectedMonth > 0)
+      setSelectedMonth(selectedMonth -= 1)
+    else{
+      setSelectedMonth(11)
+      setSelectedYear(selectedYear -= 1)
+    }
   }
   
   const nextMonth = () => {
-    setCurrentMonth(currentMonth += 1)
+    if(selectedMonth < 11)
+      setSelectedMonth(selectedMonth += 1)
+    else{
+      setSelectedMonth(0)
+      setSelectedYear(selectedYear += 1)
+    }
   }
 
   useEffect(()=> {
     setMonthlyExpenses(expenses.filter(exp => {
       let [year, month] = exp.date.split('-')
-      return (currentMonth+1 === +month) && (currentYear === +year)
+      return (selectedMonth+1 === +month) && (selectedYear === +year)
     }))
-  }, [currentMonth])
+  }, [selectedMonth, selectedYear, expenses])
 
-  const groupedExpenses = monthlyExpenses.reduce((expense, item) => {
+  const groupedMonthlyExpenses = monthlyExpenses.reduce((expense, item) => {
     const category = item.category;
     const price = item.price;
     if (!expense.hasOwnProperty(category)) {
@@ -73,11 +80,11 @@ function PieChartPage() {
     ];
 
     const chartData = {
-        labels: Object.keys(groupedExpenses), 
+        labels: Object.keys(groupedMonthlyExpenses), 
         datasets: [
             {
                 label: "Expenses",
-                data: Object.values(groupedExpenses),
+                data: Object.values(groupedMonthlyExpenses),
                 backgroundColor: BGColors,
                 hoverBackgroundColor: BGHoverColors,
                 borderColor: "black",
@@ -85,12 +92,20 @@ function PieChartPage() {
             }
         ]}
     
-    console.log("groupedExpenses", groupedExpenses);
+// predictedData should predict the next month expense based on the previous... 6 months? 
+// It should take into consideration months without a category
+// but not months with no category at all
+
+    let pieChartTitle;
+    if (selectedYear === new Date().getFullYear())
+      pieChartTitle = `${monthsOfTheYear[selectedMonth]}'s Expenses`
+    else
+      pieChartTitle = `${monthsOfTheYear[selectedMonth]} ${selectedYear}'s Expenses`
 
   return (
     <div>
       <BasicModal
-                title= {`${monthsOfTheYear[currentMonth]}'s Expenses`}
+                title= {pieChartTitle} 
                 buttonIcon= {<FcInfo />}
                 modalTitle="The Pie Chart"
                 description="Gives you an overall view of your spending habits"
@@ -101,6 +116,7 @@ function PieChartPage() {
                     className="piechart-buttons left">
                     <SlArrowLeft/>
                   </Button>
+                  {/* if chartData.label.length == 0 - display predicted data */}
                   <PieChart chartData={chartData}/>
                   <Button onClick={nextMonth}
                     title="next month" 

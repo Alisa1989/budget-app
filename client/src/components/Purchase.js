@@ -24,7 +24,7 @@ function Purchase({ purchase}) {
             <td title="Notes">{purchase.notes}</td>
             <td title="When did you make the purchase?">{purchase.date.slice(0,10)}</td>
             <td title="Category?">{(purchase.category).charAt(0).toUpperCase() + purchase.category.slice(1)}</td>
-            <td title="Is this a recurring purchase?"> {purchase.recurring === true ? "Yes" : "No" }</td>
+            {/* <td title="Is this a recurring purchase?"> {purchase.recurring === true ? "Yes" : "No" }</td> */}
             <td title="Click to delete this purchase.">
                 <BasicPopover 
                     item={purchase}

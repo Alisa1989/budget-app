@@ -21,6 +21,12 @@ const options = {
 
 function PieChart({ chartData }) {
 
+  let display;
+  if (chartData["datasets"][0]["data"].length === 0)
+    display = "There are no expenses logged for this month"
+  else
+    display = <Pie oprtions={options} data={chartData}/>
+
   return (
     <div className="chart-container">
       {/* <h2 style={{ textAlign: "center" }}>Pie Chart</h2> */}
@@ -40,7 +46,7 @@ function PieChart({ chartData }) {
           }
         }}
       />} */}
-      {chartData && <Pie oprtions={options} data={chartData}/>}
+      {display}
     </div>
   );
 }

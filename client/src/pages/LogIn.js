@@ -52,7 +52,7 @@ export default function LogIn() {
   const {user, isLoading, isError, isSuccess, message} = useSelector(
     (state) => state.auth
   ) 
-
+console.log("isLoading", isLoading)
   useEffect(() => {
     if (isError) {
       alert(message)
@@ -89,6 +89,14 @@ export default function LogIn() {
     //   password: data.get('password'),
     // });
   };
+
+  const demoSubmit = () => {
+    const userData = {
+      email: "demouser@user.com",
+      password: "demouser"
+    }
+    dispatch(login(userData))
+  }
 
   if (isLoading) {
     return <Spinner/>
@@ -146,24 +154,28 @@ export default function LogIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              title= "Coming Soon!"
+              title= "Log In"
             >
               Log In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2" title="You don't need to create an account to test it out!" 
+                <Button onClick={() => demoSubmit()} variant="text" title="You don't need to create an account to test it out!" 
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'flex-start'
+                    justifyContent: 'center'
                   }}>
                   Demo it first!
-                  <InfoOutlinedIcon/>
-                </Link>
+                  {/* <InfoOutlinedIcon/> */}
+                </Button>
               </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2" title= "Coming Soon!">
+              <Grid item sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                <Link href="/register" variant="body2" title= "Coming Soon!" >
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
