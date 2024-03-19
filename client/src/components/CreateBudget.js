@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import { createBudget } from '../features/budgets/BudgetSlice';
 import { Button } from '@mui/material';
 
-function CreateBudget() {
+function CreateBudget({categories}) {
     const [budget, setBudget] = useState({
         category: "",
         amount: ""
@@ -29,11 +29,11 @@ function CreateBudget() {
       };
 
     return (
-        <div className='form-container'>
-            <h3>To add a budget</h3>
-            <form onSubmit={addBudget}>
+        <div>
+            <h3>Add a budget</h3>
+            <form className='form-container'>
                 <label htmlFor="category">
-                    Select a Category
+                    Category
                     <select
                         name="category"
                         id="category"
@@ -42,13 +42,9 @@ function CreateBudget() {
                         autoFocus
                     >
                         <option value="">--Please choose an option--</option>
-                        <option value="rent">Rent</option>
-                        <option value="food">Food</option>
-                        <option value="cars">Cars</option>
-                        <option value="house">House</option>
-                        <option value="healthcare">Healthcare</option>
-                        <option value="theia">Theia</option>
-                        <option value="other">Other</option>
+                        {categories && categories.map((cat, index) => {
+                    return <option value={cat} key={index}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                  })}
                     </select>
                 </label>
                 <label htmlFor="amount">
@@ -62,7 +58,7 @@ function CreateBudget() {
                     onChange={onChange}
                     />
                 </label>
-                <Button title="Add Budget" className="wait" variant="contained" size="small" onClick={addBudget}>Add Budget</Button>
+                <Button title="Add Budget" className="wait add-budget-button" variant="contained" size="small" onClick={addBudget}>Add </Button>
             </form>
         </div>
     )

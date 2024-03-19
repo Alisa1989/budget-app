@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
-const EditPage = () => {
+const EditPage = ({categories}) => {
     const paramsId = useParams();
     
     const { expenses, message } = useSelector((state) => state.expenses);
@@ -116,13 +116,9 @@ const onChange = (e) => {
                                 onChange={onChange}
                             >
                                 <option value="">--Please choose an option--</option>
-                                <option value="rent">Rent</option>
-                                <option value="food">Food</option>
-                                <option value="cars">Cars</option>
-                                <option value="house">House</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="theia">Theia</option>
-                                <option value="other">Other</option>
+                                {categories && categories.map((cat) => {
+                                    return <option value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                                })}
                             </select>
                             </label>
                         </td>

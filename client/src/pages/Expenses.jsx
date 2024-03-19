@@ -13,7 +13,7 @@ function Expenses({expenses}) {
     }
 
     return(
-        <div>
+        <div className="expense-table-container">
             <BasicModal
                 title= "List of Expenses"
                 buttonIcon= {<FcInfo />}

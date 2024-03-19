@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+.home-container {
+  width: 1000px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -42,20 +46,47 @@
   margin-right: 8px;
 }
 
-.App-header a {
+.App-header a, .App-header button {
   text-decoration: none;
   display: flex;
   align-items: center;
   color: white;
 }
 
-.App-header a:hover {
-  color: #b35cee;
+.App-header button {
+  font-size: 100%;
+  font-family: inherit;
+  border: 0;
+  padding: 0;
+  background-color: inherit;
+}
+
+.App-header a:hover, button:hover {
+  color: gold;
 }
 
 .App-header li {
   line-height: 2.2;
   margin-left: 20px;
+}
+
+.App-footer {
+  background-color: #7E2DB4;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: calc(2vmin);
+  color: white;
+}
+
+.App-footer a:link, .App-footer a:visited, .App-footer a:active {
+  color: white;
+}
+
+.App-footer a:hover {
+  color: gold;
 }
 
 .Nav-link {
@@ -95,29 +126,60 @@
   margin: 1%;
 }
 
-.add-expense-button {
+.add-expense-button, .add-budget-button {
   max-width: 50%;
   left: 25%;
 }
 
 @media screen and (max-width: 600px) {
-  table {
+  .expense-table-container {
+    overflow: scroll;
+  }
+  .linegraph-container, .barchart-container{
     display: none;
   }
 }
 
 table {
   overflow-x: auto;
-  display: block;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
   width: 100%;
   text-align: center;
-  /* display: flex;
-  flex-direction: column; */
+  border: 1px solid;
+}
+
+thead, tbody {
+  width: 100%;
+}
+
+tr:nth-child(even){background-color: #b28cd9;}
+
+tr:hover {background-color: #ddd;}
+
+th:first-of-type {
+  border-top-left-radius: 10px;
+}
+th:last-of-type {
+  border-top-right-radius: 10px;
+}
+tr:last-of-type td:first-of-type {
+  border-bottom-left-radius: 10px;
+}
+tr:last-of-type td:last-of-type {
+  border-bottom-right-radius: 10px;
 }
 
 .expenses-table th, td {
   border: 1px solid;
+  padding: 4px;
+}
+
+.expenses-table button {
+  background-color: inherit;
+  border: 2px dashed #7E2DB4;
+  border-radius: 5px;
   padding: 2px;
 }
 
@@ -134,12 +196,19 @@ table {
 .single-budget {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .single-budget-frame {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.single-budget-frame span {
+  padding-top: 5%;
 }
 
 progress[value] {
@@ -192,3 +261,10 @@ progress[value]::-webkit-progress-bar {
   font-size: 22pt;
   font-weight: bolder;
 } */
+
+/* .linegraph-container {
+
+} */
+.icon-delete, .icon-modify {
+  font-size: 24px;
+}

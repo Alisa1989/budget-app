@@ -20,15 +20,15 @@ function SingleBudget({ item, index, currentMonthExpenses }) {
   const progressThresholds = [
     {
       upperLimit: 0.5,
-      color: "green"
+      color: "limegreen"
     },
     {
       upperLimit: 0.75,
-      color: "orange"
+      color: "gold"
     },
     {
       upperLimit: 1,
-      color: "darkred"
+      color: "red"
     }
   ];
 
@@ -41,27 +41,28 @@ function SingleBudget({ item, index, currentMonthExpenses }) {
 
   return (
     <div key={index} className="single-budget-frame">
-                  <span title="Click to edit this budget"><MdOutlineEditNote onClick={() => handleEdit()} /></span>
+      <span title="Click to edit this budget">
+        <MdOutlineEditNote onClick={() => handleEdit()} className="icon-modify"/>
+      </span>
       <div className="single-budget">
-
-      <label htmlFor="file">{item.category}</label>
-      <progress className="progress-bar"
-        id="file"
-        title={`${value} of ${item.amount}`}
-        max={item.amount}
-        value={value > item.amount ? value = item.amount : value}
-        style={{
-          "--progress-color": progressThresholds.find(({ upperLimit }) => upperLimit >= value/item.amount)?.color,
-        }}
+        <label htmlFor="file">{item.category}</label>
+        <progress
+          className="progress-bar"
+          id="file"
+          title={`${value} of ${item.amount}`}
+          max={item.amount}
+          value={value > item.amount ? (value = item.amount) : value}
+          style={{
+            "--progress-color": progressThresholds.find(
+              ({ upperLimit }) => upperLimit >= value / item.amount
+            )?.color,
+          }}
         >
-        {value || 0}%
-      </progress>
+          {value || 0}%
+        </progress>
       </div>
       <span title="Click to delete this budget.">
-        <BasicPopover 
-          item = {item}
-          handleDeletion={budgetDeletion}
-        />
+        <BasicPopover item={item} handleDeletion={budgetDeletion} />
       </span>
     </div>
   );

@@ -4,12 +4,11 @@ import BasicModal from "../components/BasicModal";
 import { FcInfo } from "react-icons/fc";
 import CreateBudget from "../components/CreateBudget";
 import { useSelector, useDispatch } from "react-redux";
-import { reset } from "../features/budgets/BudgetSlice";
 import Spinner from "../components/Spinner";
 import SingleBudget from "../components/SingleBudget";
 
 
-const Budgets = ({groupedExpenses, currentMonthExpenses}) => {
+const Budgets = ({categories, currentMonthExpenses}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,9 +26,6 @@ const Budgets = ({groupedExpenses, currentMonthExpenses}) => {
       navigate("/login");
     }
 
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [user, navigate, isError, message, dispatch]);
 
   if (isLoading) {
@@ -44,10 +40,12 @@ const Budgets = ({groupedExpenses, currentMonthExpenses}) => {
                 modalTitle="Budgets"
                 description="Budgets allow you to set your spending goals. You can Add, Modify, or delete a budget."
                 />
-        {budgets && budgets.map((item, index) =>(
+        {budgets && budgets.toSorted().map((item, index) =>(
           <SingleBudget item={item} key={index} currentMonthExpenses={currentMonthExpenses}/>
         ))}
-        <CreateBudget />
+        <CreateBudget
+          categories={categories}
+        />
     </div>
   )
 }

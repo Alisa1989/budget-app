@@ -64,10 +64,10 @@ const data = {
   ],
 };
 
-function StackedBarChartPage({expensesByMonthByCategory}) {
+function StackedBarChartPage({expensesByMonthByCategory, pastSixMonths}) {
   console.log("expensesByMonthByCategory". expensesByMonthByCategory)
   return (
-    <div>
+    <div className="barchart-container">
       <h5>StackedBarChartPage</h5>
       <Bar options={options} data={data} />
     </div>

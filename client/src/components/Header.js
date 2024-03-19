@@ -26,7 +26,7 @@ function Header() {
             Budgee
         </Link>
       </h1>
-        {/* <ul className="Nav-list">
+        <ul className="Nav-list">
           {user ? (
             <li>
             <button className="btn-logout" onClick={onLogout}>
@@ -47,7 +47,7 @@ function Header() {
             </li>
             </>
           )}
-        </ul> */}
+        </ul>
     </header>
   );
 }

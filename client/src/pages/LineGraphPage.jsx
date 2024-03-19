@@ -19,9 +19,13 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+  );
+  
+  function LineGraphPage({expensesByMonthByCategory, pastSixMonths, categories}) {
 
-export const options = {
+  const pastSixMonthsDeux = ["2024-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03"]
+  
+  const options = {
   responsive: true,
   plugins: {
     legend: {
@@ -38,10 +42,31 @@ export const options = {
 // array of months in a year
 // build data from data
 // have an array of colors
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = pastSixMonths;
+const borderColors = ["rgb(255, 99, 132)", "rgb(53, 162, 235)", "rgb(255, 99, 132)", "rgb(53, 162, 235)", "rgb(255, 99, 132)", "rgb(53, 162, 235)"]
+const backgroundColors = ["rgba(255, 99, 132, 0.5)", "rgba(53, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)", "rgba(53, 162, 235, 0.5)", "rgba(255, 99, 132, 0.5)", "rgba(53, 162, 235, 0.5)",] 
 
-export const data = {
+// const dataSetBuilder = (cats, exp, pastMonths) => {
+//   let result = []
+//   for (let i = 0; i < cats; i++){
+//     for (let j = 0; j < cats; j++){
+//       result.push({
+//         label: cats[i],
+//         data: (expensesByMonthByCategory[pastSixMonthsDeux[i]][categories[j]] || 0),
+//         borderColor: borderColors[i],
+//         backgroundColor: backgroundColors[i]
+//       })
+//     }
+//   }
+// }
+
+// let theString = pastSixMonths[5]
+// console.log(pastSixMonths, "past 6", theString, "and category: ", categories[0])
+// console.log(`something working of ${theString}: `, expensesByMonthByCategory[pastSixMonthsDeux[5]][categories[0]])
+
+const data = {
   labels,
+  // datasets: dataSetBuilder(categories, expensesByMonthByCategory, pastSixMonths)
   datasets: [
     {
       label: "Dataset 1",
@@ -58,11 +83,10 @@ export const data = {
   ],
 };
 
-function LineGraphPage({expensesByMonthByCategory}) {
   return (
-    <div>
+    <div className="linegraph-container">
       <h5>LineGraphPage</h5>
-      <Line options={options} data={data} />
+      <Line options={options} data={data} className="linegraph-container"/>
     </div>
   );
 }

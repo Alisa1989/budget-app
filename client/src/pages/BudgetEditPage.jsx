@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { updateBudget } from "../features/budgets/BudgetSlice";
 import { useSelector } from "react-redux";
 
-function BudgetEditPage() {
+function BudgetEditPage({categories}) {
     const paramsId = useParams()
     const { budgets, message } = useSelector((state) => state.budgets);
     const budget = budgets.find(item => Number(paramsId.id === item._id))
@@ -66,13 +66,9 @@ function BudgetEditPage() {
                                 onChange={onChange}
                             >
                                 <option value="">--Please choose an option--</option>
-                                <option value="rent">Rent</option>
-                                <option value="food">Food</option>
-                                <option value="cars">Cars</option>
-                                <option value="house">House</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="theia">Theia</option>
-                                <option value="other">Other</option>
+                                {categories && categories.map((cat, index) => {
+                                    return <option value={cat} key={index}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                                })}
                             </select>
                             </label>
                         </td>

@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <div>
+    <footer className='App-footer'>
         <p>
             All Rights Reserved {new Date().getFullYear()}
         </p>
@@ -13,7 +13,7 @@ function Footer() {
                     Alexandre Steinhauslin
             </a>
         </p>
-    </div>
+    </footer>
   )
 }
 

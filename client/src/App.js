@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// import HomePage from './pages/HomePage';
-// import Expenses from './pages/Expenses';
 import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
 import Home from './pages/Home';
@@ -21,6 +19,7 @@ import './App.css';
 import Footer from './components/Footer';
 
 function App() {
+  const categories = ["cars", "food", "healthcare", "house", "kids", "rent", "other" ]
 
   const [purchase, setEditPurchase] = useState([])
   const dispatch = useDispatch();
@@ -55,10 +54,10 @@ function App() {
                 <Route path="/budgee" element={<BudgeePage/>} /> 
                 <Route path="/login" element={<LogIn/>} /> 
                 <Route path="/register" element={<Register/>} /> 
-                <Route path="/" element={<Home setEditPurchase={setEditPurchase}/>} /> 
+                <Route path="/" element={<Home setEditPurchase={setEditPurchase} categories={categories}/>} /> 
                 <Route path="/create-purchase" element={<CreatePage />} /> 
-                <Route path="/edit-purchase/:id" element={<EditPage purchase={purchase}/>} /> 
-                <Route path="/edit-budget/:id" element={<BudgetEditPage/>} /> 
+                <Route path="/edit-purchase/:id" element={<EditPage purchase={purchase} categories={categories}/>} /> 
+                <Route path="/edit-budget/:id" element={<BudgetEditPage categories={categories}/>} /> 
                 <Route path="*" element={<ErrorPage/>}/>
 
             </Routes>

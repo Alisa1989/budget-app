@@ -21,7 +21,7 @@ export default function BasicPopover({item, handleDeletion }) {
 
   return (
     <div>
-        <MdOutlineDeleteForever onClick={handleClick}/>
+        <MdOutlineDeleteForever onClick={handleClick} className='icon-delete'/>
         <Popover
             id={id}
             open={open}

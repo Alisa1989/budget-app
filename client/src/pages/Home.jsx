@@ -10,13 +10,15 @@ import Spinner from "../components/Spinner";
 import LineGraphPage from "./LineGraphPage";
 import StackedBarChartPage from "./StackedBarChartPage";
 
-function Home({ setEditPurchase }) {
+function Home({categories, setEditPurchase }) {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [currentMonthExpenses, setCurrentMonthExpenses] = useState()
+  const [pastSixMonths, setPastSixMonths] = useState([])
 
   const { user } = useSelector((state) => state.auth);
   const { expenses, isLoading:isExpensesLoading, isError, message } = useSelector(
@@ -25,6 +27,11 @@ function Home({ setEditPurchase }) {
   const { isLoading: isBudgetLoading} = useSelector(
     (state) => state.budgets
   );
+
+  const yearMonthFormat = (year, month) => {
+    // takes in a year and month and converts it to Date format
+    return String(year) + "-" + String(month+1).padStart(2, '0')
+  }
 
   useEffect(() => {
     if (isError) {
@@ -35,14 +42,15 @@ function Home({ setEditPurchase }) {
       navigate("/login");
     }
 
-    setCurrentMonthExpenses(expensesByMonthByCategory[String(selectedYear) + "-" + String(selectedMonth+1).padStart(2, '0')])
+    setCurrentMonthExpenses(expensesByMonthByCategory[yearMonthFormat(selectedYear, selectedMonth)])
+    setPastSixMonths(lastSixMonths(selectedYear, selectedMonth))
 
   }, [user, navigate, isError, message, dispatch, selectedMonth, selectedYear]);
 
   const uniqueYearMonths = [...new Set(expenses.map(({date}) => date.split("-").slice(0,2).join("-")))].sort();
 
-  // creates an object with the Year-Month as keys and as the value an array of the relative categories: amounts for those months
   const expensesByMonthByCategory = useMemo(() => {
+    // creates an object with the Year-Month as keys and as the value an array of the relative categories: amounts for those months
     return uniqueYearMonths.reduce((acc, yearMonth) => ({
     ...acc,
     [yearMonth]: expenses.filter(({date}) => date.startsWith(yearMonth)).reduce((eAcc, {category, price}) => ({
@@ -55,9 +63,30 @@ function Home({ setEditPurchase }) {
 //   console.log("date: " + String(selectedYear) + "-" + String(selectedMonth).padStart(2, '0'))
 // console.log("selected month expense", expensesByMonthByCategory[String(selectedYear) + "-" + String(selectedMonth+1).padStart(2, '0')])
 
-//object of months that will be displayed in the line graph and stacked bar chart. These will be the last 6 months including the current one. The key will be the month in YYYY-MM format while the value will be the labels.
+const lastSixMonths = (year, month) => {
+  //returns an array of string with the YYYY-MM dates of the last six months including the current one
+  let result = []
+  const decrementMonth = (year, month, subtrahend) => {
+    while (subtrahend > 0){
+      if (month > 0)
+        month--
+      else {
+        month = 11
+        year--
+      }
+      subtrahend--
+    }
+    return [year, month]
+  }
+  for (let i = 0; i < 6; i++) {
+    let decremented = decrementMonth(year, month, i)
+    console.log("decremented", decremented[0], decremented[1])
+    result.unshift(yearMonthFormat(decremented[0], decremented[1]))
+  }
+  return result
+}
 
-//TO DO
+console.log("pastSixMonths in home ", pastSixMonths)
 
 
 
@@ -89,24 +118,30 @@ function Home({ setEditPurchase }) {
           setSelectedMonth={setSelectedMonth} 
           selectedYear={selectedYear} 
           setSelectedYear={setSelectedYear}
+          categories={categories}
           />
         </Grid>
-        <Grid item order={{xs:3, sm: 3, md: 3}}>
+        <Grid item order={{xs:3, sm: 3, md: 3}} sx={{width: "100%"}}>
           <Budgets 
           selectedMonth={selectedMonth} 
           currentMonthExpenses={currentMonthExpenses}
+          categories={categories}
           />
         </Grid>
         </Grid>
-        <Grid container sx={{flexFlow: {xs: "column", sm:"column", md: "row" }}}>
-        <Grid>
+        <Grid container sx={{paddingY: '5%', alignItems: "center", flexFlow: {xs: "column", sm:"column", md: "row" }}}>
+        <Grid sx={{minWidth: '50%'}}>
           <LineGraphPage
           expensesByMonthByCategory={expensesByMonthByCategory}
+          pastSixMonths={pastSixMonths}
+          categories={categories}
           />
         </Grid>
-        <Grid>
+        <Grid sx={{minWidth: {xs: 0, md: '50%'}, maxWidth:{xs: 'sm'}}}>
           <StackedBarChartPage
           expensesByMonthByCategory={expensesByMonthByCategory}
+          pastSixMonths={pastSixMonths}
+          categories={categories}
           />
         </Grid>
       </Grid>
