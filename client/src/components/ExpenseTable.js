@@ -34,7 +34,6 @@ function ExpenseTable({ expenses, onEdit }) {
 
   return (
     <table className="expenses-table">
-      {/* <caption>Your Expenses</caption> */}
       <thead>
         <tr>
           <th>Edit</th>

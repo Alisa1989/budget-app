@@ -150,11 +150,17 @@ table {
   border: 1px solid;
 }
 
+.table-modify {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
 thead, tbody {
   width: 100%;
 }
 
 tr:nth-child(even){background-color: #b28cd9;}
+th{background-color: #b28cd9;}
 
 tr:hover {background-color: #ddd;}
 
@@ -171,16 +177,17 @@ tr:last-of-type td:last-of-type {
   border-bottom-right-radius: 10px;
 }
 
-.expenses-table th, td {
+.expenses-table th, .expenses-table td, .table-modify th, .table-modify td {
   border: 1px solid;
   padding: 4px;
 }
 
 .expenses-table button {
   background-color: inherit;
-  border: 2px dashed #7E2DB4;
+  border: 2px dashed white;
   border-radius: 5px;
   padding: 2px;
+  cursor: pointer;
 }
 
 .chart-container {

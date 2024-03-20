@@ -99,8 +99,8 @@ function CreatePage({categories}) {
                   onChange={onChange}
                   >
                   <option value="">--Please choose an option--</option>
-                  {categories && categories.map((cat) => {
-                    return <option value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                  {categories && categories.map((cat, index) => {
+                    return <option value={cat} key={index}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
                   })}
                 </select>
               </label>

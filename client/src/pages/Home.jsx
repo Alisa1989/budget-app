@@ -17,8 +17,6 @@ function Home({categories, setEditPurchase }) {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
-  const [currentMonthExpenses, setCurrentMonthExpenses] = useState()
-  const [pastSixMonths, setPastSixMonths] = useState([])
 
   const { user } = useSelector((state) => state.auth);
   const { expenses, isLoading:isExpensesLoading, isError, message } = useSelector(
@@ -37,14 +35,11 @@ function Home({categories, setEditPurchase }) {
     if (isError) {
       console.log(message, isError);
     }
-    console.log("user", user)
+
     if (!user) {
       navigate("/login");
     }
-
-    setCurrentMonthExpenses(expensesByMonthByCategory[yearMonthFormat(selectedYear, selectedMonth)])
-    setPastSixMonths(lastSixMonths(selectedYear, selectedMonth))
-
+ 
   }, [user, navigate, isError, message, dispatch, selectedMonth, selectedYear]);
 
   const uniqueYearMonths = [...new Set(expenses.map(({date}) => date.split("-").slice(0,2).join("-")))].sort();
@@ -59,36 +54,30 @@ function Home({categories, setEditPurchase }) {
     }), {})
   }), {})}, [expenses, uniqueYearMonths]);
 
-  console.log("expensesByMonthByCategory", expensesByMonthByCategory)
-//   console.log("date: " + String(selectedYear) + "-" + String(selectedMonth).padStart(2, '0'))
-// console.log("selected month expense", expensesByMonthByCategory[String(selectedYear) + "-" + String(selectedMonth+1).padStart(2, '0')])
+  const currentMonthExpenses = useMemo(() => { 
+    return expensesByMonthByCategory[yearMonthFormat(selectedYear, selectedMonth)]}, [selectedYear, selectedMonth, expensesByMonthByCategory]);
 
-const lastSixMonths = (year, month) => {
-  //returns an array of string with the YYYY-MM dates of the last six months including the current one
-  let result = []
-  const decrementMonth = (year, month, subtrahend) => {
-    while (subtrahend > 0){
-      if (month > 0)
-        month--
-      else {
-        month = 11
-        year--
+  const pastSixMonths = useMemo(() => {
+      //returns an array of string with the YYYY-MM dates of the last six months including the current one
+      let result = []
+      const decrementMonth = (year, month, subtrahend) => {
+        while (subtrahend > 0){
+          if (month > 0)
+            month--
+          else {
+            month = 11
+            year--
+          }
+          subtrahend--
+        }
+        return [year, month]
       }
-      subtrahend--
-    }
-    return [year, month]
-  }
-  for (let i = 0; i < 6; i++) {
-    let decremented = decrementMonth(year, month, i)
-    console.log("decremented", decremented[0], decremented[1])
-    result.unshift(yearMonthFormat(decremented[0], decremented[1]))
-  }
-  return result
-}
-
-console.log("pastSixMonths in home ", pastSixMonths)
-
-
+      for (let i = 0; i < 6; i++) {
+        let decremented = decrementMonth(selectedYear, selectedMonth, i)
+        result.unshift(yearMonthFormat(decremented[0], decremented[1]))
+      }
+      return result
+  }, [selectedYear, selectedMonth])
 
   if (isExpensesLoading || isBudgetLoading) {
     return <Spinner />;
@@ -123,7 +112,6 @@ console.log("pastSixMonths in home ", pastSixMonths)
         </Grid>
         <Grid item order={{xs:3, sm: 3, md: 3}} sx={{width: "100%"}}>
           <Budgets 
-          selectedMonth={selectedMonth} 
           currentMonthExpenses={currentMonthExpenses}
           categories={categories}
           />

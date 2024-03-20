@@ -3,10 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { updateBudget } from "../features/budgets/BudgetSlice";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 function BudgetEditPage({categories}) {
     const paramsId = useParams()
-    const { budgets, message } = useSelector((state) => state.budgets);
+    const { budgets} = useSelector((state) => state.budgets);
     const budget = budgets.find(item => Number(paramsId.id === item._id))
     
     const [budgetEdit, setBudgetEdit] = useState({
@@ -34,49 +35,46 @@ function BudgetEditPage({categories}) {
     };
 
     return(
-        <>
-            <h2>Modify Invoice</h2>
-            <table id="budgets">
-                <caption>Modify a budget</caption>
-                <thead>
+        <table className="table-modify" id="budgets">
+            <caption><h2>Modify Invoice</h2></caption>
+            <thead>
+            <tr>
+                <th>Amount</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+            <tbody>
                 <tr>
-                    <th>Amount</th>
-                    <th>Category</th>
-                </tr>
-            </thead>
-                <tbody>
-                    <tr>
-                        <td><label htmlFor="amount">
-                            <input 
-                            type="text" 
-                            id="amount" 
-                            name="amount"
-                            placeholder="0.00" 
-                            step="0.01"
-                            value={budgetEdit.amount} 
+                    <td><label htmlFor="amount">
+                        <input 
+                        type="text" 
+                        id="amount" 
+                        name="amount"
+                        placeholder="0.00" 
+                        step="0.01"
+                        value={budgetEdit.amount} 
+                        onChange={onChange}
+                        />
+                    </label></td>
+                    <td>
+                        <label htmlFor="category">
+                        <select
+                            name="category"
+                            id="category"
+                            value={budgetEdit.category}
                             onChange={onChange}
-                            />
-                        </label></td>
-                        <td>
-                            <label htmlFor="category">
-                            <select
-                                name="category"
-                                id="category"
-                                value={budgetEdit.category}
-                                onChange={onChange}
-                            >
-                                <option value="">--Please choose an option--</option>
-                                {categories && categories.map((cat, index) => {
-                                    return <option value={cat} key={index}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
-                                })}
-                            </select>
-                            </label>
-                        </td>
-                        <td><button title="Confirm Changes" className="wait" onClick={editbudget}>Modify</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </>
+                        >
+                            <option value="">--Please choose an option--</option>
+                            {categories && categories.map((cat, index) => {
+                                return <option value={cat} key={index}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+                            })}
+                        </select>
+                        </label>
+                    </td>
+                    <td><Button title="Confirm Changes" className="wait modify" variant="contained" size="large" onClick={editbudget}>Modify</Button></td>
+                </tr>
+            </tbody>
+        </table>
     )
 }
 

@@ -59,7 +59,7 @@ export default function Register() {
         alert(message)
       }
 
-      if (isSuccess || user) {
+      if (isSuccess && user) {
         navigate('/')
       }
 

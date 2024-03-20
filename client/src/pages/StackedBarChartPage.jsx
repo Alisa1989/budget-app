@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,59 +17,54 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
-
-const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: "How do expenses compare with budgets",
+  );
+  
+function StackedBarChartPage({expensesByMonthByCategory, pastSixMonths, categories}) {
+  
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: "Expenses by month",
+      },
     },
-  },
-  responsive: true,
-  scales: {
-    x: {
-      stacked: true,
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
     },
-    y: {
-      stacked: true,
-    },
-  },
-};
+  };
 
-// TO DO
-// could use to compare budgets with expenses
-// negatives for going over budget
+  const labels = pastSixMonths;
+  const backgroundColors = ["rgb(255, 99, 132)", "rgb(53, 162, 235)", "rgb(53, 235, 68)", "rgb(53, 74, 235)", "rgb(235, 217, 53)", "rgb(159, 53, 235)", "rgb(235, 53, 53)", "rgb(235, 120, 53)"]
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+  const dataSetBuilder = useMemo(() => {
+    let result = []
+    for (let i = 0; i < categories.length; i++){
+      result.push({
+        label: categories[i],
+        data: pastSixMonths.map((elem) => {
+          return expensesByMonthByCategory[elem]?.[categories[i]] || 0
+        }),
+        backgroundColor: backgroundColors[i]
+      })
+    }
+    return result;
+  }, [pastSixMonths, expensesByMonthByCategory, categories])
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: [200, 600, -600, 200, -600, 200, 600],
-      backgroundColor: "rgb(255, 99, 132)",
-    },
-    {
-      label: "Dataset 2",
-      data: [300, 100, -400, 200, -300, 700, 200],
-      backgroundColor: "rgb(75, 192, 192)",
-    },
-    // {
-    //   label: "Dataset 3",
-    //   data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-    //   backgroundColor: "rgb(53, 162, 235)",
-    // },
-  ],
-};
+  const data = {
+    labels,
+    datasets: dataSetBuilder
+  };
 
-function StackedBarChartPage({expensesByMonthByCategory, pastSixMonths}) {
-  console.log("expensesByMonthByCategory". expensesByMonthByCategory)
   return (
     <div className="barchart-container">
-      <h5>StackedBarChartPage</h5>
-      <Bar options={options} data={data} />
+      <h3>Stacked Bar Chart</h3>
+      {data.datasets? <Bar options={options} data={data} /> : <div>Loading...</div>}
     </div>
   );
 }
