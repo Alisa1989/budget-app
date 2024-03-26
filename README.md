@@ -35,28 +35,32 @@
 
 # Getting Started
 ## Step 1: Clone the repository
+Make sure you have Git installed locally
 ```
-$ Clone Repo "https://github.com/Alisa1989/budget-app.git"
+$ git clone "https://github.com/Alisa1989/budget-app.git"
 ```
 ## Step 2: Create Your MongoDB Account and Database Cluster
 - Create your own MongoDB account by visiting the MongoDB website and signing up for a new account.
-
-- Create a new database or cluster by following the instructions provided in the MongoDB documentation. Remember to note down the "Connect to your application URI" for the database, as you will need it later. Also, make sure to change <password> with your own password
-
-- add your current IP address to the MongoDB database's IP whitelist to allow connections (this is needed whenever your ip changes)
+- Create a new project
+- Use the side menu to navigate to Database under Deployment and click on Build a Database
+- Click on Create Database User and then Choose a Connection Method
+- Click MongoDB for VSCode and then follow the instructions provided by MongoDB and Copy the connection string and place it in your local application /server/.env file (you will create this in the next step)
+- make sure that your IP address has been added to the IP Access List.
 
 ## Step 3: Create .env file in the /server directory 
 ```
-$cd server
-$echo .env
+$ cd budget-app 
+$ cd server
+$ code .env
 ```
 and include
 ```
-MONGODB_CONNECT_STRING=[your MongoDB uri]
-PORT=[the port you choose for your backend]
+MONGODB_CONNECT_STRING=[your MongoDB uri it will look something like this and it will need single quotation marks: 'mongodb+srv://<username>:<password>@cluster0.e48fsl0.mongodb.net']
+PORT=[the port you choose for your backend, like: 3000]
 NODE_ENV = development
-ACCESS_TOKEN_SECRET =[your JWT secret key]
+ACCESS_TOKEN_SECRET =[your JWT secret key, make something up like: thisismysecret]
 ```
+replace the square brackets and save
 ## Step 4: install dependencies and start the server
 ```
 $ npm install
