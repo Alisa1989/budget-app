@@ -34,8 +34,8 @@
 * MongoDB
 
 # Getting Started
+These instructions require you to have Git, Node, and NPM installed locally
 ## Step 1: Clone the repository
-Make sure you have Git installed locally
 ```
 $ git clone "https://github.com/Alisa1989/budget-app.git"
 ```
