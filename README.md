@@ -49,7 +49,6 @@ $ git clone "https://github.com/Alisa1989/budget-app.git"
 
 ## Step 3: Create .env file in the /server directory 
 ```
-<<<<<<< Updated upstream
 $ cd budget-app 
 $ cd server
 $ code .env
@@ -67,32 +66,6 @@ replace the square brackets and save
 $ npm install
 $ npm start
 ```
-=======
-$ npm install
-$ npm start
-```
-
-## Step 5: Create .env file in the /client directory
-Open a new terminal window
-```
-$ cd client
-```
-create .env file
-```
-$ echo .env
-```
-and include:
-```
-PORT=[the port you choose for your frontend]
-```
-Backend .env include:
-```
-MONGODB_CONNECT_STRING=
-PORT=
-NODE_ENV = development
-ACCESS_TOKEN_SECRET =
-```
->>>>>>> Stashed changes
 
 ## Step 5: Create .env file in the /client directory
 Open a new terminal window
@@ -118,8 +91,3 @@ $ npm start
 
 # License
 [MIT](https://github.com/Alisa1989/Store64/blob/main/LICENSE) Alexandre Steinhauslin
-
-
-
-
-
