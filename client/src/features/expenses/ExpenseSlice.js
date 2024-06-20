@@ -109,7 +109,7 @@ export const expenseSlice = createSlice({
             .addCase(getExpenses.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.expenses = action.payload.sort((a, b) => {
+                state.expenses = action.payload?.sort((a, b) => {
                     if (a.date > b.date)
                         return 1
                     else if (a.date < b.date)

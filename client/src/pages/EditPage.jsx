@@ -40,6 +40,7 @@ const onChange = (e) => {
         
     };
     setPurchaseEdit(newFormData);
+    console.log(newFormData);
   };
 
     return(
@@ -112,7 +113,7 @@ const onChange = (e) => {
                     <select
                         name="category"
                         id="category"
-                        value={purchase.category}
+                        value={purchaseEdit.category}
                         onChange={onChange}
                         >
                         <option value="">--Please choose an option--</option>

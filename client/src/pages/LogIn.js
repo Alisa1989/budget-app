@@ -14,7 +14,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+// import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -130,7 +130,7 @@ console.log("isLoading", isLoading)
               name="email"
               value={email}
               onChange={onChange}
-              autoComplete="email"
+              autoComplete="new-password"
               autoFocus
             />
             <TextField
@@ -143,7 +143,7 @@ console.log("isLoading", isLoading)
               id="password"
               value={password}
               onChange={onChange}
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

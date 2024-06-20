@@ -20,7 +20,7 @@ function Expenses({expenses}) {
                 modalTitle="The List of Purchases"
                 description="Contains all your purchases. You can Add, Modify, or delete a purchase."
                 />
-            {expenses.length > 0 ? 
+            {expenses?.length > 0 ? 
             (
                 <ExpenseTable
                 expenses={expenses}

@@ -24,7 +24,8 @@ function ExpenseTable({ expenses, onEdit }) {
   const changeSort = (key) => {
     let direction = "ascending";
     if (
-        sortingParameters && sortingParameters.key === key &&
+      sortingParameters &&
+      sortingParameters.key === key &&
       sortingParameters.direction === "ascending"
     ) {
       direction = "descending";
@@ -39,25 +40,25 @@ function ExpenseTable({ expenses, onEdit }) {
           <th>Edit</th>
           <th>
             <button type="button" onClick={() => changeSort("name")}>
-            Name
-          </button>
-            </th>
+              Name
+            </button>
+          </th>
           <th>
             <button type="button" onClick={() => changeSort("price")}>
-            Price
-          </button>
-            </th>
-            <th>Notes</th>
+              Price
+            </button>
+          </th>
+            <th className="hideOnSmall">Notes</th>
           <th>
             <button type="button" onClick={() => changeSort("date")}>
-            Date
-          </button>
-            </th>
+              Date
+            </button>
+          </th>
           <th>
             <button type="button" onClick={() => changeSort("category")}>
-            Category
-          </button>
-            </th>
+              Category
+            </button>
+          </th>
           {/* <th>Recurring</th> */}
           <th>Delete</th>
         </tr>

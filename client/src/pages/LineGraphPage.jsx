@@ -61,7 +61,7 @@ const data = {
 };
 
   return (
-    <div>
+    <div className="linegraph-container">
       <h3>Line Graph</h3>
       {data.datasets? <Line options={options} data={data}/> : <div>Loading...</div>}
     </div>

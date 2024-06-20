@@ -42,7 +42,7 @@ function Home({categories, setEditPurchase }) {
  
   }, [user, navigate, isError, message, dispatch, selectedMonth, selectedYear]);
 
-  const uniqueYearMonths = [...new Set(expenses.map(({date}) => date.split("-").slice(0,2).join("-")))].sort();
+  const uniqueYearMonths = [...new Set(expenses?.map(({date}) => date.split("-").slice(0,2).join("-")))].sort();
 
   const expensesByMonthByCategory = useMemo(() => {
     // creates an object with the Year-Month as keys and as the value an array of the relative categories: amounts for those months
@@ -118,14 +118,14 @@ function Home({categories, setEditPurchase }) {
         </Grid>
         </Grid>
         <Grid container sx={{paddingY: '5%', alignItems: "center", flexFlow: {xs: "column", sm:"column", md: "row" }}}>
-        <Grid sx={{minWidth: '50%'}}>
+        <Grid sx={{minWidth:  {xs: '100%', md: '50%'}, maxWidth:{xs: '100%'}}}>
           <LineGraphPage
           expensesByMonthByCategory={expensesByMonthByCategory}
           pastSixMonths={pastSixMonths}
           categories={categories}
           />
         </Grid>
-        <Grid sx={{minWidth: {xs: 0, md: '50%'}, maxWidth:{xs: 'sm'}}}>
+        <Grid sx={{minWidth: {xs: '100%', md: '50%'}, maxWidth:{xs: '100%'}}}>
           <StackedBarChartPage
           expensesByMonthByCategory={expensesByMonthByCategory}
           pastSixMonths={pastSixMonths}

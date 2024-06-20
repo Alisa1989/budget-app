@@ -40,13 +40,13 @@ function PieChartPage({categories, selectedMonth, setSelectedMonth, selectedYear
   }
 
   useEffect(()=> {
-    setMonthlyExpenses(expenses.filter(exp => {
+    setMonthlyExpenses(expenses?.filter(exp => {
       let [year, month] = exp.date.split('-')
       return (selectedMonth+1 === +month) && (selectedYear === +year)
     }))
   }, [selectedMonth, selectedYear, expenses])
 
-  const groupedMonthlyExpenses = monthlyExpenses.reduce((expense, item) => {
+  const groupedMonthlyExpenses = monthlyExpenses?.reduce((expense, item) => {
     const category = item.category;
     const price = item.price;
     if (!expense.hasOwnProperty(category)) {
@@ -56,7 +56,7 @@ function PieChartPage({categories, selectedMonth, setSelectedMonth, selectedYear
     return expense;
   }, {});
 
-  const grandTotal = monthlyExpenses.reduce((total, item) => {
+  const grandTotal = monthlyExpenses?.reduce((total, item) => {
     return total + item.price;
   }, 0)
 
@@ -80,7 +80,7 @@ function PieChartPage({categories, selectedMonth, setSelectedMonth, selectedYear
     ];
 
     const chartData = {
-        labels: Object.keys(groupedMonthlyExpenses), 
+        labels: Object.keys(groupedMonthlyExpenses) || [], 
         datasets: [
             {
                 label: "Expenses",

@@ -37,8 +37,6 @@
 To run this project, install it locally using npm.
 ```
 $ Clone Repo "https://github.com/Alisa1989/budget-app.git"
-$ npm install
-$ npm start
 ```
 Frontend .env include:
 ```
@@ -50,6 +48,18 @@ MONGODB_CONNECT_STRING=
 PORT=
 NODE_ENV = development
 ACCESS_TOKEN_SECRET =
+```
+Terminal window 1
+```
+$ cd server
+$ npm install
+$ npm run dev
+```
+Terminal window 2
+```
+$ cd client
+$ npm install
+$ npm start
 ```
 
 # License

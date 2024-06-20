@@ -126,7 +126,7 @@ export default function Register() {
               name="email"
               value={email}
               onChange={onChange}
-              autoComplete="email"
+              autoComplete="new-password"
               autoFocus
             />
             <TextField
@@ -139,6 +139,7 @@ export default function Register() {
               id="password"
               value={password}
               onChange={onChange}
+              autoComplete="new-password"
             />
             <TextField
               margin="normal"
@@ -150,6 +151,7 @@ export default function Register() {
               id="password2"
               value={password2}
               onChange={onChange}
+              autoComplete="new-password"
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
